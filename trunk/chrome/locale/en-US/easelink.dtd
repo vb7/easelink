@@ -1,0 +1,11 @@
+﻿<!ENTITY easelink-status.tooltip "Process All">
+<!ENTITY easelink-setmu-auto.label "Auto Process">
+<!ENTITY easelink-setmu-auto.accesskey "A">
+<!ENTITY easelink-setmu-plain.label "Decode Links">
+<!ENTITY easelink-setmu-plain.accesskey "D">
+<!ENTITY easelink-setmu-thunder.label "Process Thunder Links">
+<!ENTITY easelink-setmu-thunder.accesskey "T">
+<!ENTITY easelink-setmu-qqdl.label "Process QQ Xuanfeng Links">
+<!ENTITY easelink-setmu-qqdl.accesskey "Q">
+<!ENTITY easelink-ctxmu-convt.label "Decode This Link">
+<!ENTITY easelink-ctxmu-convt.accesskey "D">
