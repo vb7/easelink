@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>easelink@ashi.cn</em:id>
+    <em:version>1.0.0.100113</em:version>
+    <em:type>2</em:type>
+    
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>3.5</em:minVersion>
+        <em:maxVersion>3.7a1pre</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <em:localized>
+      <Description>
+        <em:locale>zh-CN</em:locale>
+        <em:name>Ease Link</em:name>
+        <em:description>修复并解码迅雷、QQ旋风、快车和 Rayfile 的下载链接。</em:description>
+      </Description>
+    </em:localized>
+    
+    <em:name>Ease Link</em:name>
+    <em:description>Fixing and Decoding Thunder, QQ Xuanfeng, Flashget and Rayfile Download links.</em:description>
+    <em:creator>ashi</em:creator>
+    <em:contributor></em:contributor>
+    <em:iconURL>chrome://easelink/content/icon.png</em:iconURL>
+    
+  </Description>
+</RDF>
