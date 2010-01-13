@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://easelink/skin/easelink.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://easelink/locale/easelink.dtd">
+<overlay id="easelink-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript;version=1.7" src="easelink.js" />
+  
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="easelink-strings" src="chrome://easelink/locale/easelink.properties" />
+  </stringbundleset>
+  
+  <statusbar id="status-bar">
+    <statusbarpanel id="easelink-status"
+                    context="easelink-setmu"
+                    mousethrough="never">
+      <image tooltip="easelink-tooltip"/>
+    </statusbarpanel>
+  </statusbar>
+  
+  <popupset>
+    <tooltip id="easelink-tooltip" orient="vertical">
+      <label id="easelink-tooltip-label" value="&easelink-status.tooltip;"/>
+    </tooltip>
+    <menupopup id="easelink-setmu" position="after_pointer">
+      <menuitem id="easelink-setmu-auto" label="&easelink-setmu-auto.label;"
+                accesskey="&easelink-setmu-auto.accesskey;"
+                type="checkbox"
+                value="auto" />
+      <menuitem id="easelink-setmu-plain" label="&easelink-setmu-plain.label;"
+                accesskey="&easelink-setmu-plain.accesskey;"
+                type="checkbox"
+                value="plain" />
+      <menuseparator />
+      <menuitem id="easelink-setmu-thunder" label="&easelink-setmu-thunder.label;"
+          accesskey="&easelink-setmu-thunder.accesskey;"
+          type="checkbox"
+          value="thunder"
+          disabled="true" />
+      <menuitem id="easelink-setmu-qqdl" label="&easelink-setmu-qqdl.label;"
+          accesskey="&easelink-setmu-qqdl.accesskey;"
+          type="checkbox"
+          value="qqxuanfeng"
+          disabled="true" />
+    </menupopup>
+  </popupset>
+  
+  <popup id="contentAreaContextMenu">
+    <menuitem id="easelink-ctxmu-convt" label="&easelink-ctxmu-convt.label;"
+              accesskey="&easelink-ctxmu-convt.accesskey;"
+              insertafter="context-bookmarklink" />
+  </popup>
+  
+</overlay>
