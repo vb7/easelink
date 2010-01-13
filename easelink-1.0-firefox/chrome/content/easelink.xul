@@ -4,11 +4,7 @@
 <overlay id="easelink-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript;version=1.7" src="easelink.js" />
-  
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="easelink-strings" src="chrome://easelink/locale/easelink.properties" />
-  </stringbundleset>
-  
+
   <statusbar id="status-bar">
     <statusbarpanel id="easelink-status"
                     context="easelink-setmu"

@@ -46,7 +46,14 @@ const Protocols = {
   'fs2you:': {
     xpath: "[@href and starts-with(translate(@href, 'FSYOU', 'fsyou'), 'fs2you:')]",
     fix: emptyFunction,
-    decode: defaultDecode(0, 0)
+    decode: function(node) {
+      var url = node.getAttribute('href');
+      var match;
+      if (matches = base64Pattrn.exec(url)) {
+        url = atob(matches[2]).toString();
+        node.setAttribute('href', 'http://' + url);
+      }
+    }
   },
   'flashget:': {
     xpath: "[count(@*[contains(translate(., 'FLASHGET', 'flashget'), 'flashget://')])>0]",
