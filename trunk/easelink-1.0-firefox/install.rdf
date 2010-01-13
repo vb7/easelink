@@ -4,7 +4,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>easelink@ashi.cn</em:id>
-    <em:version>1.0.0.100113b</em:version>
+    <em:version>1.0.0.7</em:version>
     <em:type>2</em:type>
     
     <!-- Firefox -->
