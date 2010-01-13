@@ -93,6 +93,15 @@ const Protocols = {
       }
     },
     decode: emptyFunction
+  },
+  'namipan:': {
+    xpath: "[@href and starts-with(translate(@href, 'JAVSCRIPT', 'javscript'), 'javascript:') and contains(translate(@href, 'NAMIPCO', 'namipco'), '.namipan.com')]",
+    fix: emptyFunction,
+    decode: function(node) {
+      var url = node.getAttribute('href').split("'");
+      if (url.length == 3)
+        node.setAttribute('href', decodeURIComponent(url[1]));
+    }
   }
 };
 
@@ -143,25 +152,40 @@ const ContextMenu = {
   },
   handleEvent: function(evt) {
     switch (evt.type) {
-      case 'popupshowing':
-        this._menu.hidden = true;
-        if (gContextMenu.onLink) {
-          var link = gContextMenu.link;
-          var doc = link.ownerDocument;
-          for each (var protocol in Protocols)
-            if (doc.evaluate('.' + protocol.xpath, link, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
-              protocol.fix(link);
-              gContextMenu.linkURL = gContextMenu.getLinkURL();
-              gContextMenu.linkURI = gContextMenu.getLinkURI();
-              gContextMenu.linkProtocol = gContextMenu.getLinkProtocol();
-            }
-          if ((link.protocol in Protocols) && (this._decode = Protocols[link.protocol].decode) != emptyFunction)
-            this._menu.hidden = false;
+    case 'popupshowing':
+      this._menu.hidden = true;
+      if (gContextMenu.onLink) {
+        var link = gContextMenu.link;
+        var doc = link.ownerDocument;
+        var plain = prefBranch.getBoolPref('plain') && gContextMenu.onSaveableLink;
+        var fixed = false, found = false;
+        for each (var protocol in Protocols)
+          if (doc.evaluate('.' + protocol.xpath, link, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+            protocol.fix(link);
+            this._decode = protocol.decode;
+            fixed = true;
+            break;
+          }
+        if (!fixed && (link.protocol in Protocols)) {
+          this._decode = Protocols[link.protocol].decode;
+          found = true;
         }
-        break;
-      case 'command':
-        this._decode(gContextMenu.target);
-        break;
+        if (fixed || found) {
+          if (plain)
+            this._decode(link);
+          else
+            this._menu.hidden = this._decode == emptyFunction;
+        }
+        if (fixed || found && plain) {
+          gContextMenu.linkURL = gContextMenu.getLinkURL();
+          gContextMenu.linkURI = gContextMenu.getLinkURI();
+          gContextMenu.linkProtocol = gContextMenu.getLinkProtocol();
+        }
+      }
+      break;
+    case 'command':
+      this._decode(gContextMenu.target);
+      break;
     }
   }
 };
