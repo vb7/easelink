@@ -1,11 +1,13 @@
-﻿<!ENTITY easelink-status.tooltip "Process All">
-<!ENTITY easelink-setmu-auto.label "Auto Process">
+﻿<!ENTITY easelink-status.tooltip "Process All Links">
+<!ENTITY easelink-setmu-auto.label "Auto Fix Links">
 <!ENTITY easelink-setmu-auto.accesskey "A">
-<!ENTITY easelink-setmu-plain.label "Decode Links">
+<!ENTITY easelink-setmu-plain.label "Auto Decode Links">
 <!ENTITY easelink-setmu-plain.accesskey "D">
 <!ENTITY easelink-setmu-thunder.label "Process Thunder Links">
 <!ENTITY easelink-setmu-thunder.accesskey "T">
 <!ENTITY easelink-setmu-qqdl.label "Process QQ Xuanfeng Links">
 <!ENTITY easelink-setmu-qqdl.accesskey "Q">
-<!ENTITY easelink-ctxmu-convt.label "Decode This Link">
-<!ENTITY easelink-ctxmu-convt.accesskey "D">
+<!ENTITY easelink-ctxmu-decode.label "Decode This Link">
+<!ENTITY easelink-ctxmu-decode.accesskey "D">
+<!ENTITY easelink-ctxmu-convert.label "Convert To A Link">
+<!ENTITY easelink-ctxmu-convert.accesskey "T">
