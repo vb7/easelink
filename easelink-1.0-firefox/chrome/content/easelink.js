@@ -160,6 +160,7 @@ const ContextMenu = {
     var frag = range.extractContents();
     var link = frag.ownerDocument.createElement('a');
     link.setAttribute('href', this._selurl);
+    link.setAttribute('target', '_blank');
     if (prefBranch.getBoolPref('plain')) this._decode(link);
     link.appendChild(frag);
     range.insertNode(link);
