@@ -4,7 +4,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>easelink@ashi.cn</em:id>
-    <em:version>1.0.0.8</em:version>
+    <em:version>1.0.0.9</em:version>
     <em:type>2</em:type>
     
     <!-- Firefox -->
@@ -16,19 +16,20 @@
       </Description>
     </em:targetApplication>
 
+    <em:name>Ease Link</em:name>
+    <em:creator>ashi</em:creator>
+    <em:description>Fixing and Decoding Thunder, QQ Xuanfeng, Flashget and Rayfile Download links.</em:description>
+    <em:homepageURL>https://code.google.com/easelink/</em:homepageURL>
+    <em:iconURL>chrome://easelink/content/icon.png</em:iconURL>
+
     <em:localized>
       <Description>
         <em:locale>zh-CN</em:locale>
         <em:name>Ease Link</em:name>
-        <em:description>修复并解码迅雷、QQ旋风、快车和 Rayfile 的下载链接。</em:description>
+        <em:creator>ashi</em:creator>
+        <em:description>修复并解码迅雷、QQ旋风、快车和 Rayfile 的专属下载链接。</em:description>
       </Description>
     </em:localized>
-    
-    <em:name>Ease Link</em:name>
-    <em:description>Fixing and Decoding Thunder, QQ Xuanfeng, Flashget and Rayfile Download links.</em:description>
-    <em:creator>ashi</em:creator>
-    <em:contributor></em:contributor>
-    <em:iconURL>chrome://easelink/content/icon.png</em:iconURL>
     
   </Description>
 </RDF>

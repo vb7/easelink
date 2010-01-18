@@ -3,7 +3,7 @@
 <!DOCTYPE overlay SYSTEM "chrome://easelink/locale/easelink.dtd">
 <overlay id="easelink-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script type="application/x-javascript;version=1.7" src="easelink.js" />
+  <script type="application/x-javascript;version=1.8" src="easelink.js" />
 
   <statusbar id="status-bar">
     <statusbarpanel id="easelink-status"
@@ -41,9 +41,12 @@
   </popupset>
   
   <popup id="contentAreaContextMenu">
-    <menuitem id="easelink-ctxmu-convt" label="&easelink-ctxmu-convt.label;"
-              accesskey="&easelink-ctxmu-convt.accesskey;"
+    <menuitem id="easelink-ctxmu-decode" label="&easelink-ctxmu-decode.label;"
+              accesskey="&easelink-ctxmu-decode.accesskey;"
               insertafter="context-bookmarklink" />
+    <menuitem id="easelink-ctxmu-convert" label="&easelink-ctxmu-convert.label;"
+              accesskey="&easelink-ctxmu-convert.accesskey;"
+              insertbefore="context-searchselect" />
   </popup>
   
 </overlay>
