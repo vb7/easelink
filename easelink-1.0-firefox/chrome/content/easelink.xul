@@ -18,14 +18,14 @@
       <label id="easelink-tooltip-label" value="&easelink-status.tooltip;"/>
     </tooltip>
     <menupopup id="easelink-setmu" position="after_pointer">
-      <menuitem id="easelink-setmu-auto" label="&easelink-setmu-auto.label;"
-                accesskey="&easelink-setmu-auto.accesskey;"
-                type="checkbox"
-                value="auto" />
       <menuitem id="easelink-setmu-plain" label="&easelink-setmu-plain.label;"
                 accesskey="&easelink-setmu-plain.accesskey;"
                 type="checkbox"
                 value="plain" />
+      <menuitem id="easelink-setmu-auto" label="&easelink-setmu-auto.label;"
+                accesskey="&easelink-setmu-auto.accesskey;"
+                type="checkbox"
+                value="auto" />
       <menuseparator />
       <menuitem id="easelink-setmu-thunder" label="&easelink-setmu-thunder.label;"
           accesskey="&easelink-setmu-thunder.accesskey;"
