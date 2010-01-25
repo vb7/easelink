@@ -1,6 +1,6 @@
 ﻿#labels Featured
 =欢迎=
-http://code.google.com/p/easelink/svn/wiki/ad.png
+http://easelink.googlecode.com/svn/wiki/ad.png
 欢迎光临 Ease Link 项目主页。
 
 Ease Link 提供了对迅雷、QQ 旋风和 Flashget 专用下载链接 Firefox 支持的临时解决方案。目前，迅雷、QQ 旋风和 Flashget 并没有真正解决这些[Troubles 人造麻烦]的意愿。
