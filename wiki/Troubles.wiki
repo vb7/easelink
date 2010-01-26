@@ -87,7 +87,7 @@ Firefox 和 Chrome 都支持 XPath (doc.evaluate())，这是寻找特征元素�
 由于使用 DOM 需要用 Javascript 来遍历所有的 Anchor 元素，并将其与特征依次对比，自然是效率低下的。当然你可能也会想到使用 doc.getAnonymousElementByAttribute() 来获取元素但是这种方法只能进行精确匹配，而无法进行模糊的匹配。
 但是使用 XPath 则不同，XPath 是被完整封装的 Native Code，可以直接返回匹配后的元素引用，其效率自然不是使用 DOM 所能企及的。故而在 Ease Link 中是用了此种方法来确保寻找元素的高效和低成本。
 
-使用[http://xiazai.zol.com.cn/ ZOL软件下载频道首页]进行测试^^*^^，查找迅雷专用链接。所用代码如下：
+使用[http://xiazai.zol.com.cn/ ZOL软件下载频道首页]进行测试^*^，查找迅雷专用链接。所用代码如下：
 {{{
 function findByDOM() {
   var nodes = [];
