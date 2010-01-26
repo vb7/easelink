@@ -17,21 +17,29 @@
 
 迅雷：
 {{{
-<a style="color: rgb(0, 51, 153);" oncontextmenu="ThunderNetwork_SetHref(this,2,4)" onclick="bangtj('xl1');return OnDownloadClick_Simple(this)" thunderrestitle="迅雷(Thunder) V5.9.15.1274" thundertype="04" thunderpid="19985" thunderhref="thunder://QUFodHRwOi8vNDYuZHVvdGUub3JnL3RodW5kZXI1LmV4ZVpa" target="_self" href="#">迅雷高速下载点1</a>
+<a style="color: rgb(0, 51, 153);" oncontextmenu="ThunderNetwork_SetHref(this,2,4)"
+   onclick="bangtj('xl1');return OnDownloadClick_Simple(this)"
+   thunderrestitle="迅雷(Thunder) V5.9.15.1274" thundertype="04" thunderpid="19985"
+   thunderhref="thunder://QUFodHRwOi8vNDYuZHVvdGUub3JnL3RodW5kZXI1LmV4ZVpa"
+   target="_self" href="#">迅雷高速下载点1</a>
 <!-- 地址：thunder://QUFodHRwOi8vNDYuZHVvdGUub3JnL3RodW5kZXI1LmV4ZVpa -->
 }}}
 
 Flashget：
 
 {{{
-<a oncontextmenu="Flashget_SetHref_js(this, 5769);" onclick="convertFgURL(0, 5769)" href="javascript:void(0);">Flashget高速下载</a>
+<a oncontextmenu="Flashget_SetHref_js(this, 5769);" onclick="convertFgURL(0, 5769)"
+   href="javascript:void(0);">Flashget高速下载</a>
 <!-- 地址：?? -->
 }}}
 
 QQ 旋风：
 
 {{{
-<a target="_self" oncontextmenu="OnContextClick(this,event)" onclick="OnDownloadClick_Simple(this,event,6000019)" qhref="http://xiazai.zol.com.cn/down.php?softid=313602&amp;subcatid=33&amp;site=10" href="javascript:void(0);">使用超级旋风下载</a>
+<a target="_self" oncontextmenu="OnContextClick(this,event)"
+   onclick="OnDownloadClick_Simple(this,event,6000019)"
+   qhref="http://xiazai.zol.com.cn/down.php?softid=313602&amp;subcatid=33&amp;site=10"
+   href="javascript:void(0);">使用超级旋风下载</a>
 <!-- http://xiazai.zol.com.cn/down.php?softid=313602&amp;subcatid=33&amp;site=10 -->
 }}}
 
@@ -72,7 +80,8 @@ Firefox 和 Chrome 都支持 XPath (doc.evaluate())，这是寻找特征元素�
 .//a[@href and starts-with(translate(@href, 'FSYOU', 'fsyou'), 'fs2you:')]
 .//a[count(@*[contains(translate(., 'FLASHGET', 'flashget'), 'flashget://')])>0]
 .//a[@href and starts-with(translate(@href, 'HTPWAQCOM', 'htpwaqcom'), 'http://wpa.qq.com/')]
-.//a[@href and starts-with(translate(@href, 'JAVSCRIPT', 'javscript'), 'javascript:') and contains(translate(@href, 'NAMIPCO', 'namipco'), '.namipan.com')]
+.//a[@href and starts-with(translate(@href, 'JAVSCRIPT', 'javscript'), 'javascript:')
+     and contains(translate(@href, 'NAMIPCO', 'namipco'), '.namipan.com')]
 }}}
 
 由于使用 DOM 需要用 Javascript 来遍历所有的 Anchor 元素，并将其与特征依次对比，自然是效率低下的。当然你可能也会想到使用 doc.getAnonymousElementByAttribute() 来获取元素但是这种方法只能进行精确匹配，而无法进行模糊的匹配。
