@@ -64,7 +64,7 @@ IE 上的解决方案则略显优越，因为 IE 支持 ActiveX，所以这些�
 
 ====寻找链接====
 
-Firefox 和 Chrome 都支持 XPath ('doc.evaluate()')，这是寻找特征元素的首选方式，而非使用传统的 DOM。
+Firefox 和 Chrome 都支持 XPath (doc.evaluate())，这是寻找特征元素的首选方式，而非使用传统的 DOM。
 
 {{{
 .//a[@thunderhref]
@@ -75,7 +75,7 @@ Firefox 和 Chrome 都支持 XPath ('doc.evaluate()')，这是寻找特征元素
 .//a[@href and starts-with(translate(@href, 'JAVSCRIPT', 'javscript'), 'javascript:') and contains(translate(@href, 'NAMIPCO', 'namipco'), '.namipan.com')]
 }}}
 
-由于使用 DOM 需要用 Javascript 来遍历所有的 Anchor 元素，并将其与特征依次对比，自然是效率低下的。当然你可能也会想到使用 'doc.getAnonymousElementByAttribute()' 来获取元素但是这种方法只能进行精确匹配，而无法进行模糊的匹配。
+由于使用 DOM 需要用 Javascript 来遍历所有的 Anchor 元素，并将其与特征依次对比，自然是效率低下的。当然你可能也会想到使用 doc.getAnonymousElementByAttribute() 来获取元素但是这种方法只能进行精确匹配，而无法进行模糊的匹配。
 但是使用 XPath 则不同，XPath 是被完整封装的 Native Code，可以直接返回匹配后的元素引用，其效率自然不是使用 DOM 所能企及的。故而在 Ease Link 中是用了此种方法来确保寻找元素的高效和低成本。
 
 使用[http://xiazai.zol.com.cn/ ZOL软件下载频道首页]进行测试^^*^^，查找迅雷专用链接。所用代码如下：
@@ -109,18 +109,18 @@ function test() {
 }}}
 
 首次
-||函数||调用次数||总时间||平均时间||最小时间||最大时间||
+||*函数*||*调用次数*||*总时间*||*平均时间*||*最小时间*||*最大时间*||
 ||findByDOM||1||39.127ms||39.127ms||39.127ms||39.127ms||
 ||findByXPath||1||1.567ms||1.567ms||1.567ms||1.567ms||
 
 1000 轮平均结果
-||函数||调用次数||总时间||平均时间||最小时间||最大时间||
+||*函数*||*调用次数*||*总时间*||*平均时间*||*最小时间*||*最大时间*||
 ||findByDOM||1000||2424.04ms||2.424ms||2.254ms||39.127ms||
 ||findByXPath||1000||1665.575ms||1.666ms||1.476ms||2.46ms||
 
 可以看见，两者在多次调用时差距并不明显，但在首次调用时的差距十分巨大。然而这类插件需要在页面装载后运行，而且只运行一次，所以第一个表格内的数据更具参考价值。
 
-,,*测试时页面共有2297个链接，并不存在任何迅雷专用链接,,
+,,*测试时页面共有2297个链接，并不存在任何迅雷专用链接，测试基于 Firefox 3.6，在 Chrome 上二者性能接近，DOM略微占优，但慢于 Firefox 的 XPath,,
 
 ====修复====
 ====解码====
