@@ -3,7 +3,7 @@
 
 ==背景==
 
-迅雷、Flashget 和 QQ 旋风都使用了私有的[http://msdn.microsoft.com/en-us/library/aa767914%28VS.85%29.aspx URL协议]链接。这并不稀奇，而且这样的自定义协议也是被 Firefox 所支持的。Firefox 会自动根据系统上已经注册的协议来调用相关的应用程序打开这些链接。
+迅雷、Flashget 和 QQ 旋风都使用了私有的 [http://msdn.microsoft.com/en-us/library/aa767914%28VS.85%29.aspx URL 协议]链接。这并不稀奇，而且这样的自定义协议也是被 Firefox 所支持的。Firefox 会自动根据系统上已经注册的协议来调用相关的应用程序打开这些链接。
 
 但是为何网页上的迅雷、Flashget 和 QQ 旋风链接却不能直接打开呢？像迅雷和 QQ 旋风的链接会弹出写着“此操作被浏览器拒绝！”的对话框，而 Flashget 的链接则会直接跳转到 Flashget 的下载页面。
 
@@ -43,7 +43,7 @@ QQ 旋风：
 <!-- http://xiazai.zol.com.cn/down.php?softid=313602&amp;subcatid=33&amp;site=10 -->
 }}}
 
-可以看出，他们都使用了一些方法来隐藏各自的链接地址。下载地址不在 href 属性内，并且有的已经进行了 Base64 编码。至于解码后的内容就是普通的 http 或者 ftp 协议的下载地址，并不是像 ed2k 等协议中的 hashset 内容。
+可以看出，他们都使用了一些方法来隐藏各自的链接地址。下载地址不在 href 属性内，并且有的已经进行了 Base64 编码。至于解码后的内容就是普通的 HTTP 或者 FTP 协议的下载地址，并不是像 ed2k 等协议中的 hashset 内容。
 
 {{{
 print(window.atob('QUFodHRwOi8vNDYuZHVvdGUub3JnL3RodW5kZXI1LmV4ZVpa'));
@@ -58,7 +58,7 @@ print(window.atob('QUFodHRwOi8vNDYuZHVvdGUub3JnL3RodW5kZXI1LmV4ZVpa'));
 
 在 Ease Link 之前就出现了很多用于解决这些问题的 Firefox/Chrome 扩展，有些版本的迅雷也含有通吃其他协议小补丁，原理大致如下。
 
-Firefox 和 Chrome 都不支持 ActiveX 所以只要是直接打开链接，一定会被其各自的脚本所拦截。于是一般的解决途径就是事先找到这些不能打开的链接，并进行处理。去掉相关的事件，并且将链接解码为普通的 http 和 ftp 协议地址。当然也可以仅仅去掉链接上的附加事件，保留其私有的协议。
+Firefox 和 Chrome 都不支持 ActiveX 所以只要是直接打开链接，一定会被其各自的脚本所拦截。于是一般的解决途径就是事先找到这些不能打开的链接，并进行处理。去掉相关的事件，并且将链接解码为普通的 HTTP 和 FTP 协议地址。当然也可以仅仅去掉链接上的附加事件，保留其私有的协议。
 
 IE 上的解决方案则略显优越，因为 IE 支持 ActiveX，所以这些链接可以直接打开，但是会因为没有安装某某软件而被拦截。这时候通吃各种协议的补丁会注册这些组件，构造出已经安装某某软件的假象，并且会注册为某某协议的 Handler。它将收到的信息进行重新的编码转换为可以被某某软件理解的其他协议信息，从而被相关软件打开。
 
@@ -68,7 +68,7 @@ IE 上的解决方案则略显优越，因为 IE 支持 ActiveX，所以这些�
 
   # 寻找需要修复的链接
   # 去除关联事件，修复链接
-  # 解码链接为 http 或 ftp 协议
+  # 解码链接为 HTTP 或 FTP 协议
 
 ====寻找链接====
 
