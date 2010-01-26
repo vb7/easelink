@@ -8,7 +8,7 @@ Ease Link 提供了对迅雷、QQ 旋风和 Flashget 专用下载链接 Firefox 
 
 我坚信，这些私有协议会因有违互联网的开放性最终被淘汰。
 
-=用户=
+=致用户=
 感谢您使用 Ease Link，如果您在使用中遇到任何的问题，我由衷地欢迎您[http://code.google.com/p/easelink/issues/entry 反馈]您所遇到的问题。
 
 当然如果您觉得反馈表单太过繁琐，您也可以直接在下边留言。
