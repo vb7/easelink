@@ -1,0 +1,25 @@
+﻿#labels Featured, Phase-Guide
+#summary 用户指南。
+=用户指南=
+
+感谢您安装了 Ease Link，以下内容将有助于您使用 Ease Link。
+
+==修复链接==
+
+默认状态下 Ease Link 已经开启了“自动修复链接”功能，可以自动修复迅雷专用链接，而其它支持的链接则需要手动操作。
+
+Ease Link 可以修复对一个链接的访问，如果您在点击迅雷等专用链接时提示“此操作被浏览器拒绝！”等。您只需在该链接上点击右键，然后选择需要的操作即可。当然您也可以在关闭右键菜单后，再次点击该链接。
+
+http://easelink.googlecode.com/svn/wiki/prompt.png
+
+http://easelink.googlecode.com/svn/wiki/fix.png
+
+==解码链接==
+
+
+
+==转换链接==
+
+
+
+==修改设置==
