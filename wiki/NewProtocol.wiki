@@ -1,0 +1,65 @@
+﻿#labels Featured,Phase-Implementation
+#summary 添加一个新协议。
+=添加一个新协议=
+
+在 Ease Link 添加一个新协议非常简单，只需要添加其对应的符合 IProtocol 接口的对象即可。
+
+{{{
+IProtocol {
+  string prefkey;                       //optional and reserved
+  string xpath;                         //required
+  void fix(HTMLAnchorElement node);     //optional, use emptyFunction if needn't
+  void decode(HTMLAnchorElement node);  //optional, use emptyFunction if needn't
+}
+}}}
+
+  * prefkey 保留项，表示可以自动处理的协议在配置树中的键名。
+  * xpath 表示其所表示对象的匹配用 XPath。
+  * fix 函数，修复给定 node。
+  * decode 函数，解码给定 node。
+
+实例：
+{{{
+{
+  xpath: "[@href and starts-with(translate(@href, 'FSYOU', 'fsyou'), 'fs2you:')]",
+  fix: emptyFunction,
+  decode: function(node) {
+    var url = node.getAttribute('href');
+    var match;
+    if (matches = base64Pattern.exec(url)) {
+      url = atob(matches[2]).toString();
+      node.setAttribute('href', 'http://' + url.substring(0, url.lastIndexOf('|')));
+    }
+  }
+}
+}}}
+
+此为处理 RayFile 的 IProtocol 对象。由于不需要修复，所以设定 fix 为 emptyFunction。
+
+最后需要将 IProtocol 注册到 Protocols。
+
+{{{
+const Protocols = {
+  ...
+  'PROTOCOL': IProtocol protocol,
+  ...
+}
+}}}
+
+实例：
+{{{
+const Protocols = {
+  ...
+  'fs2you:': IProtocol protocol,
+  '#namipan:': IProtocol protocol,
+  ...
+}
+}}}
+
+  * fs2you 为 RayFile 的自定义 URL 协议，将其完整形式（含有“:”）作为 IProtocol 注册名，字母需要全部小写。
+  * #namipan 为纳米盘的虚拟协议，也就是说此类地址可以处理，但并非一个自定义的 URL 协议，所以在它的名字前加注 #。
+
+=扩展阅读=
+
+  * [Consts_and_Variables 常量和变量]
+  * [Functions 函数]
