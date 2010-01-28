@@ -1,5 +1,6 @@
-﻿#labels Phase-Implementation
-=人造麻烦=
+﻿#labels Featured,Phase-Implementation
+#summary 迅雷下载软件为 Firefox 和 Chrome 用户带来的不便。
+=人造烦恼=
 
 ==背景==
 
