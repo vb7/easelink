@@ -73,7 +73,7 @@ IE 上的解决方案则略显优越，因为 IE 支持 ActiveX，所以这些�
 
 ====寻找链接====
 
-Firefox 和 Chrome 都支持 XPath (doc.evaluate())，这是寻找特征元素的首选方式，而非使用传统的 DOM。
+Firefox 和 Chrome 都支持 XPath (`doc.evaluate()`)，这是寻找特征元素的首选方式，而非使用传统的 DOM。
 
 {{{
 .//a[@thunderhref]
@@ -85,7 +85,7 @@ Firefox 和 Chrome 都支持 XPath (doc.evaluate())，这是寻找特征元素�
      and contains(translate(@href, 'NAMIPCO', 'namipco'), '.namipan.com')]
 }}}
 
-由于使用 DOM 需要用 Javascript 来遍历所有的 Anchor 元素，并将其与特征依次对比，自然是效率低下的。当然你可能也会想到使用 doc.getAnonymousElementByAttribute() 来获取元素但是这种方法只能进行精确匹配，而无法进行模糊的匹配。
+由于使用 DOM 需要用 Javascript 来遍历所有的 Anchor 元素，并将其与特征依次对比，自然是效率低下的。当然你可能也会想到使用 `doc.getAnonymousElementByAttribute()` 来获取元素但是这种方法只能进行精确匹配，而无法进行模糊的匹配。
 但是使用 XPath 则不同，XPath 是被完整封装的 Native Code，可以直接返回匹配后的元素引用，其效率自然不是使用 DOM 所能企及的。故而在 Ease Link 中是用了此种方法来确保寻找元素的高效和低成本。
 
 使用[http://xiazai.zol.com.cn/ ZOL软件下载频道首页]进行测试^*^，查找迅雷专用链接。所用代码如下：
@@ -120,13 +120,13 @@ function test() {
 
 首次
 ||*函数*||*调用次数*||*总时间*||*平均时间*||*最小时间*||*最大时间*||
-||findByDOM||1||39.127ms||39.127ms||39.127ms||39.127ms||
-||findByXPath||1||1.567ms||1.567ms||1.567ms||1.567ms||
+||`findByDOM`||1||39.127ms||39.127ms||39.127ms||39.127ms||
+||`findByXPath`||1||1.567ms||1.567ms||1.567ms||1.567ms||
 
 1000 轮平均结果
 ||*函数*||*调用次数*||*总时间*||*平均时间*||*最小时间*||*最大时间*||
-||findByDOM||1000||2424.04ms||2.424ms||2.254ms||39.127ms||
-||findByXPath||1000||1665.575ms||1.666ms||1.476ms||2.46ms||
+||`findByDOM`||1000||2424.04ms||2.424ms||2.254ms||39.127ms||
+||`findByXPath`||1000||1665.575ms||1.666ms||1.476ms||2.46ms||
 
 可以看见，两者在多次调用时差距并不明显，但在首次调用时的差距十分巨大。然而这类插件需要在页面装载后运行，而且只运行一次，所以第一个表格内的数据更具参考价值。
 
@@ -134,11 +134,11 @@ function test() {
 
 ====修复====
 
-此步骤的主要目的在于去除相关连的事件，并且将 thunderhref 属性或 qhref 属性的值复制到 href 属性。
+此步骤的主要目的在于去除相关连的事件，并且将 `thunderhref` 属性或 `qhref` 属性的值复制到 `href` 属性。
 
-但是对于 Flashget 和其他的一些链接则不具备这样的直接存在于 DOM 内的属性，必须通过在它的 OnContextMenu 事件触发后才会赋值 href 属性。基于此 Ease Link 仅支持迅雷和 QQ 旋风的直接修复，其他的都需要在鼠标右键点击链接时进行。
+但是对于 Flashget 和其他的一些链接则不具备这样的直接存在于 DOM 内的属性，必须通过在它的 `OnContextMenu` 事件触发后才会赋值 `href` 属性。基于此 Ease Link 仅支持迅雷和 QQ 旋风的直接修复，其他的都需要在鼠标右键点击链接时进行。
 
-右键点击时，Ease Link 会捕获 ContextMenu 的 onPopupShowing 事件。对当前 Anchor 元素进行检验，如果确定其是可以被修复的，则进行必要的修复。修复时，Anchor 元素自定义的 OnContextMenu 事件已经执行过，所以可以确保 href 内的数据已经可用。
+右键点击时，Ease Link 会捕获 ContextMenu 的 `onPopupShowing` 事件。对当前 Anchor 元素进行检验，如果确定其是可以被修复的，则进行必要的修复。修复时，Anchor 元素自定义的 `OnContextMenu` 事件已经执行过，所以可以确保 `href` 内的数据已经可用。
 
 修复过的链接会变成如下的样子，这时如果已经安装了对应的软件就可以直接打开了：
 {{{
@@ -173,3 +173,7 @@ function test() {
 <a target="_self" href="http://xiazai.zol.com.cn/down.php?softid=313602&amp;subcatid=33&amp;site=10">
    使用超级旋风下载</a>
 }}}
+
+=扩展阅读=
+
+  * [Add_New_Protocol 添加对新协议的支持]

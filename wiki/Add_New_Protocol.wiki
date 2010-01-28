@@ -34,9 +34,9 @@ IProtocol {
 }
 }}}
 
-此为处理 RayFile 的 IProtocol 对象。由于不需要修复，所以设定 fix 为 emptyFunction。
+此为处理 RayFile 的 `IProtocol` 对象。由于不需要修复，所以设定 `fix` 为 `emptyFunction`。
 
-最后需要将 IProtocol 注册到 Protocols。
+最后需要将 `IProtocol` 注册到 `Protocols`。
 
 {{{
 const Protocols = {
@@ -56,7 +56,7 @@ const Protocols = {
 }
 }}}
 
-  * fs2you 为 RayFile 的自定义 URL 协议，将其完整形式（含有“:”）作为 IProtocol 注册名，字母需要全部小写。
+  * fs2you 为 RayFile 的自定义 URL 协议，将其完整形式（含有“:”）作为 `IProtocol` 注册名，字母需要全部小写。
   * #namipan 为纳米盘的虚拟协议，也就是说此类地址可以处理，但并非一个自定义的 URL 协议，所以在它的名字前加注 #。
 
 =扩展阅读=
