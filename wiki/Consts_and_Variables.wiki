@@ -2,14 +2,14 @@
 #summary 使用内建的常量和变量。
 =常量=
 
-RegEx *urlPattern* 匹配一个 URL
+RegEx *`urlPattern`* 匹配一个 URL
 ||match[0]||完整匹配||
 ||match[1]||不含有请求（?）和锚点（#）的 URL||
 ||match[2]||协议部分||
 ||match[3]||不含有协议、请求和锚点部分的 URL||
 
 
-RegEx *base64Pattern* 匹配一个内容为 Base64 编码的 URL
-||match[0]||完整匹配||
-||match[1]||协议部分||
-||match[2]||Base64 编码部分||
+RegEx *`base64Pattern`* 匹配一个内容为 Base64 编码的 URL
+||`match\[0\]`||完整匹配||
+||`match\[1\]`||协议部分||
+||`match\[2\]`||Base64 编码部分||
