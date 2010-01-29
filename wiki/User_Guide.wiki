@@ -1,14 +1,14 @@
-﻿#labels Featured, Phase-Guide
-#summary 用户指南。
+﻿#summary 用户指南。
+#labels Featured,Phase-Guide
 =用户指南=
 
 感谢您安装了 Ease Link，以下内容将有助于您使用 Ease Link。
 
 ==修复链接==
 
-默认状态下 Ease Link 已经开启了“自动修复链接”功能，可以自动修复迅雷专用链接，而其它支持的链接则需要手动操作。
-
 Ease Link 可以修复对一个链接的访问，如果您在点击迅雷等专用链接时提示“此操作被浏览器拒绝！”等。您只需在该链接上点击右键，然后选择需要的操作即可。当然您也可以在关闭右键菜单后，再次点击该链接。
+
+默认状态下 Ease Link 已经开启了“自动修复链接”功能，可以自动修复迅雷专用链接，也可以选择开启自动修复 QQ 旋风链接。如果“自动修复链接”功能已经关闭，那么所有的链接都需要手动进行修复。
 
 http://easelink.googlecode.com/svn/wiki/prompt.png
 
@@ -16,10 +16,16 @@ http://easelink.googlecode.com/svn/wiki/fix.png
 
 ==解码链接==
 
+当一个链接的链接地址符合迅雷、Flashget 和 QQ 旋风等软件的啊格式时，Ease Link 便可对其进行修复。您只需在需要解码的链接上点击右键。默认状态下“自动解码链接”开启，即在菜单开启的同时^*^，该链接会被自动解码，您只需在菜单中选择您需要的操作即可。
 
+,,* 纳米盘并不支持自动解码，需要点击弹出菜单中的“解码当前链接”选项。,,
 
 ==转换链接==
 
+当您在网页上遇到文本网址时，只需将其选中，在右键菜单内选择“转换为链接”。转换时根据“自动解码链接”选项决定是否解码。
 
+您可以用以下地址作为测试：
 
-==修改设置==
+thunder://QUFodHRwOi8vNDYuZHVvdGUub3JnL3RodW5kZXI1LmV4ZVpa
+
+Flashget://W0ZMQVNIR0VUXWh0dHA6Ly9kbC1zaC1vY24tMS5wY2hvbWUubmV0LzF3L3RnL2ZnY25fNTIzLnJhcltGTEFTSEdFVF0=&5769
