@@ -20,7 +20,7 @@ Ease Link 提供了对迅雷、QQ 旋风和 Flashget 专用下载链接 Firefox 
 
 欢迎您对 Ease Link 提出改进意见，同时也欢迎您参与其中。
 
-一下的链接可能对您有用：
+以下的链接可能对您有用：
 
  * [Troubles 人造麻烦] 这篇文章阐述了 Ease Link 的起源和工作原理。
  * [Add_New_Protocol 添加对新协议的支持] 这篇文章提供了您进行二次开发所需的绝大多数信息。
