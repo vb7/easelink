@@ -256,7 +256,7 @@ const ContextMenu = {
 
 const EaseLink = {
   init: function() {
-    l10n = document.getElementById('easelink-strings');
+    gL10n = document.getElementById('easelink-strings');
     StatusBar.init();
     SettingMenu.init();
     ContextMenu.init();
