@@ -11,10 +11,10 @@
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
-#easelink-status[auto] image {
+#easelink-status[auto="true"] image {
   -moz-image-region: rect(32px, 16px, 48px, 0px);
 }
 
-#easelink-status[auto]:hover image {
+#easelink-status[auto="true"]:hover image {
   -moz-image-region: rect(48px, 16px, 64px, 0px);
 }
