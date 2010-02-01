@@ -1,4 +1,4 @@
-﻿<!ENTITY easelink-status.tooltip "Click To Process All Supported Links, Right Click To Change Settings.">
+﻿<!ENTITY easelink-status.tooltip "Click To Process All Links, Right Click To Change Settings.">
 <!ENTITY easelink-setmu-auto.label "Auto Fix Links">
 <!ENTITY easelink-setmu-auto.accesskey "A">
 <!ENTITY easelink-setmu-plain.label "Auto Decode Links">
