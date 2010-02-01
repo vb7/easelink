@@ -6,9 +6,9 @@ let prefBranch = Cc['@mozilla.org/preferences-service;1'].getService(Ci.nsIPrefS
                                                          .QueryInterface(Ci.nsIPrefBranch2);
 
 const Version = '$VER$';
-const UrlPattern = /^(([a-zA-Z][0-9a-zA-Z+\-\.]*\:)?\/{0,2}([0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]+))?([#\?]([0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
-const Base64Pattern = /^([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/{2}([0-9a-zA-Z\+=\/]+)([0-9a-zA-Z;\/\?:@&=\+\$\.\-_\!~\*'\(\)%#]+)?$/;
-const PartialBase64Pattern = /([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/{2}([0-9a-zA-Z\+=\/]+)([0-9a-zA-Z;\/\?:@&=\+\$\.\-_\!~\*'\(\)%#]+)?/g;
+const UrlPattern = /^(([a-zA-Z][0-9a-zA-Z+\-\.]*\:)?\/{0,2}([0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]+))?([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
+const Base64Pattern = /^([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([0-9a-zA-Z;\/\?:@&=\+\$\.\-_\!~\*'\(\)%#]+)?$/;
+const PartialBase64Pattern = /([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([0-9a-zA-Z;\/\?:@&=\+\$\.\-_\!~\*'\(\)%#]+)?/g;
 
 var gL10N;
 var gAuto = false;
