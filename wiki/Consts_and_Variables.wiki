@@ -34,4 +34,4 @@
 `Bool gPlain` "自动解码链接"是否开启。
 
 
-`Object gEnabledAPs` 已经开启的自动处理协议。
+`Object gEnabledAPs` 已经开启的自动处理协议列表。
