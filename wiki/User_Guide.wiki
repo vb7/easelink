@@ -67,3 +67,8 @@ EaseLink.processAll([doc]);
 ||flashget||Flashget专用链接||否||是||是||
 ||tencent||QQ 临时聊天||否||是||否||
 ||#namipan||纳米盘||否||否（不需要）||是||
+
+=扩展阅读=
+
+  * [Troubles 人造烦恼]
+  * [Add_New_Protocol 添加对新协议的支持]
