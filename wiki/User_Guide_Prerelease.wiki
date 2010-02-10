@@ -1,0 +1,21 @@
+﻿#summary 测试用户指南。
+#labels Phase-Guide
+=用户指南=
+
+感谢您安装了 Ease Link 的测试版。
+
+==更新==
+
+相对于上个版本，这个版本增加了对非 ASCII 网址的处理能力^*^。
+
+,,* 根据 [http://www.ietf.org/rfc/rfc3986.txt RFC3986]，URI 里的非 ASCII 字符应该都经过转义。,,
+
+==测试==
+
+* thunder://QUFmdHA6Ly9uZXc0Om5ldzRAM2dwLnh1bmxlaTNncC5jb206MjMvLzIwMTAwMjA1eHl5L8+y0fLR8tPru9LMq8DHMTEyIMDHse2458C0wLIod3d3LjNncDIuY29tKS4zZ3BaWg==
+
+=扩展阅读=
+  
+  * [User_Guide 用户指南]
+  * [Troubles 人造烦恼]
+  * [Add_New_Protocol 添加对新协议的支持]
