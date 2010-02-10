@@ -7,8 +7,8 @@ let prefBranch = Cc['@mozilla.org/preferences-service;1'].getService(Ci.nsIPrefS
 
 const Version = '$VER$';
 const UrlPattern = /^(([a-zA-Z][0-9a-zA-Z+\-\.]*\:)?\/{0,2}([0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]+))?([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
-const Base64Pattern = /^([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([0-9a-zA-Z;\/\?:@&=\+\$\.\-_\!~\*'\(\)%#]+)?$/;
-const PartialBase64Pattern = /([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([0-9a-zA-Z;\/\?:@&=\+\$\.\-_\!~\*'\(\)%#]+)?/g;
+const Base64Pattern = /^([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
+const PartialBase64Pattern = /([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}/g;
 
 var gL10N;
 var gAuto = false;
@@ -28,8 +28,8 @@ function defaultDecoder(prelen, suflen) {
   return function(node) {
     var url = node.getAttribute('href');
     var match;
-    if (matches = Base64Pattern.exec(url)) {
-      url = atob(matches[2]).toString();
+    if (match = Base64Pattern.exec(url)) {
+      url = atob(match[2]);
       node.setAttribute('href', url.substring(prelen, url.length - suflen));
     }
   };
@@ -55,7 +55,10 @@ const IProtocolFlashget = {
   xpath: "[count(@*[contains(translate(., 'FLASHGET', 'flashget'), 'flashget://')])>0]",
   fix: function(node) {
     var match;
-    if (node.protocol != 'flashget:') {
+    if (node.protocol == 'flashget:') {
+      var url = node.getAttribute('href');
+      node.setAttribute('href', url.substring(0, url.lastIndexOf('&')));
+    } else {
       for (var i = 0; i < node.attributes.length; ++i)
         if (match = PartialBase64Pattern.match(node.attributes[i].nodeValue) && match[1].toLowerCase() == 'flashget:') {
           node.setAttribute('href', match[0]);
@@ -246,7 +249,7 @@ const ContextMenu = {
       break;
     case 'command':
       if (evt.target == this._menudecode)
-        this._decode(gContextMenu.target);
+        this._decode(gContextMenu.link);
       else if (evt.target == this._menuconvt)
         this._convert();
       break;
@@ -277,10 +280,12 @@ const EaseLink = {
   _refreshAuto: function() {
     var exp = prefBranch.getBoolPref('auto');
     if (gAuto ^ exp) {
-      if (exp)
+      if (exp) {
         gBrowser.addEventListener('DOMContentLoaded', this, true);
-      else
+        this.handleEvent();
+      } else {
         gBrowser.removeEventListener('DOMContentLoaded', this, true);
+      }
       gAuto = exp;
       StatusBar.set();
       SettingMenu.set();
