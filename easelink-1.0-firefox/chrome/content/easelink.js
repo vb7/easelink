@@ -271,10 +271,10 @@ const EaseLink = {
   },
   _checkFirstRun: function() {
     if (prefBranch.getCharPref('ver') != Version) {
-      prefBranch.setCharPref('ver', Version);
-      window.setTimeout(function() {
+      if (prefBranch.getCharPref('ver').indexOf('1.0.1.') != 0) window.setTimeout(function() {
         gBrowser.selectedTab = gBrowser.addTab(gL10N.getString('First_Run_URL'));
       }, 1500);
+      prefBranch.setCharPref('ver', Version);
     }
   },
   _refreshAuto: function() {
