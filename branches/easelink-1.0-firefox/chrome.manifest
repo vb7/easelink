@@ -1,0 +1,8 @@
+content   easelink                 chrome/content/
+
+skin      easelink   classic/1.0   chrome/skin/
+
+locale    easelink   en-US         chrome/locale/en-US/
+locale    easelink   zh-CN         chrome/locale/zh-CN/
+
+overlay   chrome://browser/content/browser.xul   chrome://easelink/content/easelink.xul
