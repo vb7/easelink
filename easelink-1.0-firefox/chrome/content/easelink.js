@@ -280,12 +280,10 @@ const EaseLink = {
   _refreshAuto: function() {
     var exp = prefBranch.getBoolPref('auto');
     if (gAuto ^ exp) {
-      if (exp) {
+      if (exp)
         gBrowser.addEventListener('DOMContentLoaded', this, true);
-        this.handleEvent();
-      } else {
+      else
         gBrowser.removeEventListener('DOMContentLoaded', this, true);
-      }
       gAuto = exp;
       StatusBar.set();
       SettingMenu.set();
