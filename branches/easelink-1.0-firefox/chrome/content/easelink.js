@@ -59,17 +59,16 @@ const IProtocolFlashget = {
   xpath: "[count(@*[contains(translate(., 'FLASHGET', 'flashget'), 'flashget://')])>0]",
   fix: function(node) {
     var match;
-    if (node.protocol == 'flashget:') {
-      var url = node.getAttribute('href');
-      node.setAttribute('href', url.substring(0, url.lastIndexOf('&')));
-    } else {
+    if (node.protocol != 'flashget:')
       for (var i = 0; i < node.attributes.length; ++i)
         if (match = PartialBase64Pattern.match(node.attributes[i].nodeValue) && match[1].toLowerCase() == 'flashget:') {
           node.setAttribute('href', match[0]);
           node.removeAttribute(node.attributes[i].nodeName);
           break;
         }
-    }
+    var url = node.getAttribute('href');
+    var pos = url.lastIndexOf('&');
+    if (pos != -1) node.setAttribute('href', url.substring(0, pos));
     node.removeAttribute('oncontextmenu');
     node.removeAttribute('onclick');
   },
@@ -242,9 +241,10 @@ const ContextMenu = {
         var focusedWindow = document.commandDispatcher.focusedWindow;
         var selection = focusedWindow.getSelection();
         var text, match, protocol;
-        if (selection.rangeCount == 1 && (text = selection.toString().trim()) && text.length < 2000
+        if (selection.rangeCount == 1 && (text = selection.toString().trim()) && text.length < 1000
             && (match = UrlPattern.exec(text)) && (protocol = match[2].toLowerCase()) in Protocols) {
           this._selection = selection;
+          this._fix = Protocols[protocol].fix;
           this._decode = Protocols[protocol].decode;
           this._selurl = text;
           this._menuconvt.hidden = false;
