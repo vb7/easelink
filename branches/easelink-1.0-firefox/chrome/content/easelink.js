@@ -183,6 +183,7 @@ const SettingMenu = {
 const ContextMenu = {
   _menudecode: null,
   _menuconvt: null,
+  _fix: null,
   _decode: null,
   _selection : null,
   _selurl : "",
@@ -199,7 +200,8 @@ const ContextMenu = {
     var link = frag.ownerDocument.createElement('a');
     link.setAttribute('href', this._selurl);
     link.setAttribute('target', '_blank');
-    if (gPlain) this._decode(link);
+    if (this._fix) this._fix(link);
+    if (gPlain && this._decode) this._decode(link);
     link.appendChild(frag);
     range.insertNode(link);
   },
