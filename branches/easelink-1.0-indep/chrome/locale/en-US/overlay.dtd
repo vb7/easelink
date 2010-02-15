@@ -1,0 +1,9 @@
+﻿<!ENTITY easelink-tooltip-action "Click To Process All Links, Right Click To Change Settings.">
+<!ENTITY easelink-setmu-auto.label "Auto Fix Links">
+<!ENTITY easelink-setmu-auto.accesskey "A">
+<!ENTITY easelink-setmu-plain.label "Auto Decode Links">
+<!ENTITY easelink-setmu-plain.accesskey "D">
+<!ENTITY easelink-ctxmu-decode.label "Decode This Link">
+<!ENTITY easelink-ctxmu-decode.accesskey "D">
+<!ENTITY easelink-ctxmu-convert.label "Convert To A Link">
+<!ENTITY easelink-ctxmu-convert.accesskey "T">
