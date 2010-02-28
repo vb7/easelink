@@ -15,6 +15,10 @@ var gAuto = false;
 var gPlain = false;
 var gEnabledAPs = {};
 
+function fixedEscape(str) {
+  return str.replace(/[^0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%\?\#]+/g, function(x) escape(x));
+}
+
 function defaultFixer(attname) {
   return function(node) {
     node.setAttribute('href', node.getAttribute(attname));
@@ -30,12 +34,12 @@ function defaultDecoder(prelen, suflen) {
     var match;
     if (match = Base64Pattern.exec(url)) {
       url = atob(match[2]);
-      node.setAttribute('href', url.substring(prelen, url.length - suflen));
+      node.setAttribute('href', fixedEscape(url.substring(prelen, url.length - suflen)));
     }
   };
 }
 
-/* IProtocol definations */
+/* IProtocol Definitions */
 
 const IAutomaticProtocolThunder = {
   name: 'l10n-thunder-name',
@@ -78,7 +82,7 @@ const IProtocolRayFile = {
     var match;
     if (matches = Base64Pattern.exec(url)) {
       url = atob(matches[2]).toString();
-      node.setAttribute('href', 'http://' + url.substring(0, url.lastIndexOf('|')));
+      node.setAttribute('href', 'http://' + fixedEscape(url.substring(0, url.lastIndexOf('|'))));
     }
   }
 };
@@ -114,7 +118,7 @@ const IProtocolNamipan = {
   }
 };
 
-/* IProtocol Registrators */
+/* IProtocol Registers */
 
 const AutomaticProtocols = {
   'thunder': IAutomaticProtocolThunder,
