@@ -39,7 +39,7 @@ function defaultDecoder(prelen, suflen) {
   };
 }
 
-/* IProtocol definations */
+/* IProtocol Definitions */
 
 const IAutomaticProtocolThunder = {
   name: 'l10n-thunder-name',
@@ -118,7 +118,7 @@ const IProtocolNamipan = {
   }
 };
 
-/* IProtocol Registrators */
+/* IProtocol Registers */
 
 const AutomaticProtocols = {
   'thunder': IAutomaticProtocolThunder,
