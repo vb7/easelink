@@ -66,13 +66,19 @@ const IProtocolFlashget = {
           node.removeAttribute(node.attributes[i].nodeName);
           break;
         }
-    var url = node.getAttribute('href');
-    var pos = url.lastIndexOf('&');
-    if (pos != -1) node.setAttribute('href', url.substring(0, pos));
     node.removeAttribute('oncontextmenu');
     node.removeAttribute('onclick');
   },
-  decode: defaultDecoder(10, 10)
+  decode: function(node) {
+    var url = node.getAttribute('href');
+    var pos = url.lastIndexOf('&');
+    if (pos != -1) url = url.substring(0, pos);
+    var match;
+    if (match = Base64Pattern.exec(url)) {
+      url = atob(match[2]);
+      node.setAttribute('href', fixedEscape(url.substring(10, url.length - 10)));
+    }
+  }
 };
 
 const IProtocolRayFile = {
@@ -183,7 +189,6 @@ const SettingMenu = {
 const ContextMenu = {
   _menudecode: null,
   _menuconvt: null,
-  _fix: null,
   _decode: null,
   _selection : null,
   _selurl : "",
@@ -200,7 +205,6 @@ const ContextMenu = {
     var link = frag.ownerDocument.createElement('a');
     link.setAttribute('href', this._selurl);
     link.setAttribute('target', '_blank');
-    if (this._fix) this._fix(link);
     if (gPlain && this._decode) this._decode(link);
     link.appendChild(frag);
     range.insertNode(link);
@@ -244,9 +248,8 @@ const ContextMenu = {
         var selection = focusedWindow.getSelection();
         var text, match, protocol;
         if (selection.rangeCount == 1 && (text = selection.toString().trim()) && text.length < 1000
-            && (match = UrlPattern.exec(text)) && (protocol = match[2].toLowerCase()) in Protocols) {
+            && (match = UrlPattern.exec(text)) && match[2] && (protocol = match[2].toLowerCase()) in Protocols) {
           this._selection = selection;
-          this._fix = Protocols[protocol].fix;
           this._decode = Protocols[protocol].decode;
           this._selurl = text;
           this._menuconvt.hidden = false;
@@ -277,7 +280,7 @@ const EaseLink = {
   },
   _checkFirstRun: function() {
     if (prefBranch.getCharPref('ver') != Version) {
-      if (prefBranch.getCharPref('ver').indexOf('1.0.1.') != 0) window.setTimeout(function() {
+      if (prefBranch.getCharPref('ver') == '') window.setTimeout(function() {
         gBrowser.selectedTab = gBrowser.addTab(gL10N.getString('First_Run_URL'));
       }, 1500);
       prefBranch.setCharPref('ver', Version);
