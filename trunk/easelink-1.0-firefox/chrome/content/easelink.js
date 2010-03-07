@@ -70,9 +70,7 @@ const IProtocolFlashget = {
     node.removeAttribute('onclick');
   },
   decode: function(node) {
-    var url = node.getAttribute('href');
-    var pos = url.lastIndexOf('&');
-    if (pos != -1) url = url.substring(0, pos);
+    var url = node.getAttribute('href').replace(/&.+$/, '');
     var match;
     if (match = Base64Pattern.exec(url)) {
       url = atob(match[2]);
