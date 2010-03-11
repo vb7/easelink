@@ -1,5 +1,5 @@
 ﻿#summary 测试用户指南。
-#labels Phase-Guide
+#labels Phase-Guide,Deprecated
 =用户指南=
 
 感谢您安装了 Ease Link 的测试版。
