@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ease Link</title>
+<!-- inspired by http://www.maratz.com/blog/archives/2006/06/11/fancy-checkboxes-and-radio-buttons/ -->
+<script type="text/javascript" src="PrefBranch.js"></script>
+<script type="text/javascript">
+window.addEventListener('load', function () {
+  var prefBranch = new PrefBranch('');
+  var auto_prefs = ['thunder', 'qqxuanfeng'];
+
+  function eventHandler(e) {
+    prefBranch.setBoolPref(e.target.name, e.target.checked);
+    if (auto_prefs.indexOf(e.target.name) > -1) {
+      var auto = false;
+      for (var i = 0; !auto && i < auto_prefs.length; i++)
+        auto = auto || prefBranch.getBoolPref(auto_prefs[i]);
+      prefBranch.setBoolPref('auto', auto);
+    }
+  }
+  var inputs = document.getElementsByTagName('input');
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].checked = prefBranch.getBoolPref(inputs[i].name);
+    inputs[i].addEventListener('change', eventHandler);
+    var i18nkeys = inputs[i].title.split(',');
+    inputs[i].nextSibling.innerHTML = chrome.i18n.getMessage(i18nkeys[0], [chrome.i18n.getMessage(i18nkeys[1])]);
+  }
+});
+
+</script>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  font-size: 14px;
+  background: #080808;
+  color: #fff;
+  -webkit-user-select: none;
+}
+
+body > header {
+  width: 48px;
+  height: 48px;
+  margin: 40px auto;
+  background: url(48.png) no-repeat left center;
+  margin-bottom: 20px;
+}
+
+ul {
+  border-radius: 10px;
+  background: -webkit-gradient(linear, 0% 0%, 0% 50%, from(#999), color-stop(1, #666));
+  width: 300px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  -webkit-box-shadow: 0 5px 20px rgba(0,0,0,0.3),
+                      0 20px 200px rgba(255,255,255,0.2);
+}
+
+li {
+  list-style: none;
+  margin: 0;
+}
+
+li:not(:first-child) {
+  border-top: 2px #999 groove;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+label {
+  display: block;
+  padding: 6px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]+span {
+  display: block;
+  background: no-repeat 0 50%;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo2Mjk3RDEzMzNBQUJERjExOERCMkE2QzBGQ0JDNTkwQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2RTA2QkY2QUFCN0UxMURGQUFENDg3RUI2MTFDQ0IwNSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2RTA2QkY2OUFCN0UxMURGQUFENDg3RUI2MTFDQ0IwNSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2Mjk3RDEzMzNBQUJERjExOERCMkE2QzBGQ0JDNTkwQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2Mjk3RDEzMzNBQUJERjExOERCMkE2QzBGQ0JDNTkwQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgZRBv8AAAHvSURBVHjanFWxTsMwEHWapEkYaCvRCYmBATEwsbQSAxIDUz+CLgh17dofQP0Bpn4JP9CFiYkRiQ1EhdrGSUnDXXVXXU9JpGLpxZF9fr53d7adZrNpZrPZoTHmFnACwP992w/wfIxGo+fhcPjlWmuPYPAecAwIhGEOyAC/gBX1iDXNOQRsAfC00zS9zvP8rQYDN4BI7YyLLSAGLABzgQWNW7Lbtul0mkJ358HnVHmHXiWElBZmwjsXgOvqpAzh41wcx6jiEidDQboSHloCS2dSj0hCsZmhTbBFnpKcEOGSYGlMexqI+Boar9GGxiuQbYlwUUHKITFExiFxJSlnORWyOQwrIdEoD10RjoA3YtK1KBmZKE0oVbHcQJXbZoJJM+FxppJgCoiL7HdIpbFEVSu11aSOQlUrta2pDMosuhXETol9TSaKgy4zyYHXyXKEDZ8mXrtDKo9eWFCHRcUfCtSL6tRRtabrsIz0gPrt+ZekRtRcrkISVJz9kG44tPGiKNrKt+JS8VUi/D1uKdPpdJp4Cj24sd/h5j8TZPUCLzOhyFVJ3agFHq/X6+HL8eKOx+NZkiRX8/ncWS6XayWdvfVpM/aO/912u+13u93WYDA4bzQaWCmPzmQyQRJ8Uh4AF4DWP96ob8Ar4Knf73/+CTAAtd+/iLKPJTwAAAAASUVORK5CYII=);
+  line-height: 19px;
+  -webkit-transition: background-image 0.5s linear;
+  padding: 2px 0 4px 30px;
+}
+
+input[type="checkbox"]:checked+span {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo2Mjk3RDEzMzNBQUJERjExOERCMkE2QzBGQ0JDNTkwQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2RTA2QkY2RUFCN0UxMURGQUFENDg3RUI2MTFDQ0IwNSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2RTA2QkY2REFCN0UxMURGQUFENDg3RUI2MTFDQ0IwNSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2Mjk3RDEzMzNBQUJERjExOERCMkE2QzBGQ0JDNTkwQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2Mjk3RDEzMzNBQUJERjExOERCMkE2QzBGQ0JDNTkwQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Phdus/oAAAMKSURBVHjanJVNSBtBFMd3spvPWo2hkos0tCim0EsrJkKtBKEhYBB689ailyL05KmQSy+ClYJeShGLx1x6kXrMpaYUxFAUCjYW82FsrRpN2sZkdxPdvidvymRrD+3AP5v5+s2b997MMMMwJMZYqyRJYdBVEP7/1/LD7XZ/icViicnJySMFgFegcRzkNA00QKegMxIvFpIMYtTWWi6XW5eXl295PJ4X2Dl0AbABUkE10AmoIuiE2lUa97usrq7q8HmowM91k3V1kEbSaeIp9TGyEOfZQHaSFftqtRru6DZ2OgRoXbBQJdUJzKEIsENhmqZZqI23Y3Eqpi1rBKySVGrjliLEsbGx8ViW5Zbe3t44gBn1cz9LygXbVgl4YoJisW1ubj7x+/13sZJMJl0DAwOvdV1XKZgyj6REkxrkQ4TUXS6XIfgTJ7Ctra0YAIf41vr6+nqWlpbukwstPEs49EwEwMBoJpN53tXV5aW8bQHg0+7u7ntitEulkjY1NfWZgsZ33AQ9XyUej0dGRkbGvV7vjUQiMd3Z2dmzvr7+B/D4+FgPh8PvwQX7tDtulCQGSpqdnQ2Ojo4+4HWfz3ctnU4/A1c4zMBIJPIulUptQ/UATxQZZRMtxcLm5ubSu7u7BRHwF+DK2traJ6jmQd9APynQkgg9P3rZbFaDaM7ncrm9iw744eGhBsC3BMyB9sjKhpCvTVB0hZHP58uDg4MLEKh9M3B4eDgJwDRZeEBpZwjzLSJUJmG9USgU9kOh0DwHF4tFFYArBNzBNQjIT5KNoE15KnZiW53ACwDaBuAb2vJX0BEdCoXOvUM8/+bo80EGTTpFcCAQeEWLYdp8p4BYSQ664XCe4nQ6LRykCpeKVbBcpwWqdB80KG3stBvzLSUFg0E3jrXAjb0jphUNxtVdwvEzBNAl0GX6OqmNAUeJRqP4cnyQZ2ZmynDT3KlUKqxarZ6ZsoHfnYrgczt9UXJHR4e1v7+/fWJiwt/W1oaumWb4Ri0uLuKT8gh0E9T+H29UCfQR9HJsbKz4S4ABAHGwR0A0aVTMAAAAAElFTkSuQmCC);
+}
+
+</style>
+</head>
+<body>
+<header></header>
+<form id="options">
+<ul>
+<li>
+  <label><input type="checkbox" name="plain" title="options_plain_label" /><span></span></label>
+</li>
+<li>
+  <label><input type="checkbox" name="thunder" title="options_linktype_label,options_thunder_label" /><span></span></label>
+  <label><input type="checkbox" name="qqxuanfeng" title="options_linktype_label,options_qqxuanfeng_label" /><span></span></label>
+</li>
+</form>
+</body>
+</html>

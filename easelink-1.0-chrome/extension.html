@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+<script type="text/javascript" src="PrefBranch.js"></script>
+<script type="text/javascript">
+const Version = '$VER$';
+
+//initialize settings
+
+var prefBranch = new PrefBranch('');
+
+if (!prefBranch.getBoolPref('initialized')) {
+	prefBranch.setBoolPref('initialized', true);
+  prefBranch.setCharPref('ver', '');
+	prefBranch.setBoolPref('auto', true);
+	prefBranch.setBoolPref('plain', true);
+	prefBranch.setBoolPref('thunder', true);
+	prefBranch.setBoolPref('qqxuanfeng', false);
+}
+
+if (prefBranch.getCharPref('ver') != Version) {
+  if (prefBranch.getCharPref('ver') == '')
+    chrome.tabs.create({
+      url: chrome.i18n.getMessage("firstrun_url"),
+      selected: true
+    });
+  prefBranch.setCharPref('ver', Version);
+}
+
+var settings = {
+	auto: prefBranch.getBoolPref('auto'),
+	plain: prefBranch.getBoolPref('plain'),
+	thunder: prefBranch.getBoolPref('thunder'),
+	qqxuanfeng: prefBranch.getBoolPref('qqxuanfeng')
+};
+
+//initialize constants
+
+const MenuItems = {
+  process: {
+    settings: {
+      type: 'normal',
+      title: chrome.i18n.getMessage('contextmenu_process_label'),
+      onclick: function (aContext, aTab) {
+        chrome.tabs.sendRequest(aTab.id, {topic: 'process'});
+      }
+    }
+  },
+  decode: {
+    settings: {
+      type: 'normal',
+      title: chrome.i18n.getMessage('contextmenu_decode_label'),
+      contexts: ['link'],
+      //targetUrlPatterns: ['thunder://*/*', 'qqdl://*/*', 'flashget://*/*', 'fs2you://*/*', 'http://wpa.qq.com/*'],
+      onclick: function (aContext, aTab) {
+        chrome.tabs.sendRequest(aTab.id, {topic: 'decode'});
+      }
+    }
+  },
+  convert: {
+    settings: {
+      type: 'normal',
+      title: chrome.i18n.getMessage('contextmenu_convert_label'),
+      contexts: ['selection'],
+      onclick: function (aContext, aTab) {
+        chrome.tabs.sendRequest(aTab.id, {topic: 'convert'});
+      }
+    }
+  }
+};
+
+//classes
+
+var extension = {
+	handleRequest: function (aRequest, aSender, aSendResponse) {
+		//console.log(extension, aRequest, aSender);
+    switch (aRequest.topic) {
+      case 'changeMenuItemVisibility':
+        //no solution yet.
+        break;
+      case 'getConfig':
+        aSendResponse(settings);
+        break;
+    }
+  },
+  handleAllWindow: function (wins) {
+    for (var i = 0, tabs; i < wins.length; i++) {
+      tabs = wins[i].tabs;
+      for (var j = 0, tab; j < tabs.length; j++) {
+        tab = tabs[j];
+        chrome.tabs.sendRequest(tab.id, {
+          topic: 'updateConfig',
+          settings: settings
+        });
+      }
+    }
+  },
+	handlePrefBranchChange: function (e) {
+    //console.log(this, arguments);
+		if (e.key in settings)
+			settings[e.key] = JSON.parse(e.newValue);
+    chrome.windows.getAll({ populate: true }, extension.handleAllWindow);
+	},
+  init: function () {
+    for (var key in MenuItems) {
+      var item = MenuItems[key];
+      item.id = chrome.contextMenus.create(item.settings, item.handler);
+    }
+    chrome.extension.onRequest.addListener(this.handleRequest);
+    window.addEventListener('storage', this.handlePrefBranchChange);
+    
+  }
+};
+
+extension.init();
+
+</script>
+</body>
+</html>
