@@ -1,0 +1,44 @@
+﻿{
+  "extension_description": {
+    "message": "修复迅雷、QQ旋风、快车、RayFile、纳米盘和QQ临时聊天专用链接，转换网页上的上述种类 URL 文本为超链接。",
+    "description": "扩展说明"
+  },
+  "firstrun_url": {
+    "message": "http://code.google.com/p/easelink/wiki/User_Guide_Chrome?wl=zh-CN",
+    "description": "安装后访问的地址"
+  },
+  "options_linktype_label": {
+    "message": "在页面载入时处理$TYPE$专用链接",
+    "description": "选项页：启动相应选项则在页面启动时处理（修复并根据选项解码）相应协议的链接。",
+    "placeholders": {
+      "type": {
+        "content": "$1",
+        "example": "迅雷"
+      }
+    }
+  },
+  "options_thunder_label": {
+    "message": "迅雷",
+    "description": "迅雷下载管理器的名称。"
+  },
+  "options_qqxuanfeng_label": {
+    "message": "QQ 旋风",
+    "description": "QQ 旋风下载管理器的名称。"
+  },
+  "options_plain_label": {
+    "message": "解码专用链接为常规链接",
+    "description": "选项页：启动该选项时将把 thunder://* 等特殊协议地址解码为 http://*、ftp://* 等常规地址。"
+  },
+  "contextmenu_process_label": {
+    "message": "处理全部链接",
+    "description": "上下文菜单：点击处理（修复并根据选项解码）页面上的特殊链接。"
+  },
+  "contextmenu_decode_label": {
+    "message": "解码此链接",
+    "description": "上下文菜单：点击解码相应的链接。"
+  },
+  "contextmenu_convert_label": {
+    "message": "转换为链接",
+    "description": "上下文菜单：将选中的特殊链接文本转换为链接（根据选项解码）。"
+  }
+}

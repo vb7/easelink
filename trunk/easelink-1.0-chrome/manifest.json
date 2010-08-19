@@ -1,0 +1,25 @@
+﻿{
+  "name": "Ease Link",
+  "version": "1.0.0.0",
+  "description": "__MSG_extension_description__",
+  "icons": {
+    "16": "16.png",
+    "48": "48.png",
+    "128": "128.png"
+  },
+  "default_locale": "en_US",
+  "minimum_chrome_version": "6.0.495.0",
+  "background_page": "extension.html",
+  "options_page": "options.html",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "*://*/*"
+  ],
+  "content_scripts": [{
+    "matches": ["*://*/*"],
+    "css": [],
+    "js": ["contentscript.js"],
+    "all_frames": true
+  }]
+}

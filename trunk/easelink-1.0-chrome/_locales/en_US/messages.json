@@ -1,0 +1,44 @@
+﻿{
+  "extension_description": {
+    "message": "Fixing Thunder, QQ Xuanfeng, Flashget, Rayfile, Namipan, and QQ Temporary Chatting links. Converting URL text of above types on the webpage to a Hyperlink.",
+    "description": "The description of extension."
+  },
+  "firstrun_url": {
+    "message": "http://code.google.com/p/easelink/wiki/User_Guide_Chrome?wl=en-US",
+    "description": "Open this link after install."
+  },
+  "options_linktype_label": {
+    "message": "Processing $TYPE$ Links after Loading",
+    "description": "Options page: check this option to process (fix and decode on setting) specified links after page loading.",
+    "placeholders": {
+      "type": {
+        "content": "$1",
+        "example": "Thunder"
+      }
+    }
+  },
+  "options_thunder_label": {
+    "message": "Thunder",
+    "description": "The name of Thunder Download Manager."
+  },
+  "options_qqxuanfeng_label": {
+    "message": "QQ Xuanfeng",
+    "description": "The name of QQ Xuanfeng Download Manager."
+  },
+  "options_plain_label": {
+    "message": "Decoding URLs of Private Protocol",
+    "description": "Options page: check this option to decode URLs like thunder://* to http://* or ftp://* without user interaction."
+  },
+  "contextmenu_process_label": {
+    "message": "Process All Links",
+    "description": "Context menu: click this to process (fix and decode on setting) all the links on the webpage."
+  },
+  "contextmenu_decode_label": {
+    "message": "Decode This Link",
+    "description": "Context menu: click this to decode the link pointed to."
+  },
+  "contextmenu_convert_label": {
+    "message": "Convert To A Link",
+    "description": "Context menu: click this to convert a text selection to a link (decoded on setting)."
+  }
+}
