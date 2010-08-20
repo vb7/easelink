@@ -1,0 +1,136 @@
+﻿#summary 用户指南。
+#labels Featured,Phase-Guide
+
+=声援郭德纲=
+
+抱歉在这里放上这个，您可以选择跳到[#%E7%94%A8%E6%88%B7%E6%8C%87%E5%8D%97 下一条]。
+
+ 这事里透着中共的骚气味儿，尿骚逼骚鸡骚。从btv报道占绿地修花园的事开始我就觉得充满了传奇意味，在一个被窝里捅了刀子。随后的打人的报道更是诡异，报道彻头彻尾的显示出中宣部的特色。再一天过去，[http://www.google.com/search?hl=en&source=hp&q=%E5%91%A8%E5%B9%BF%E7%94%AB&aq=f&aqi=&aql=&oq=&gs_rfai= 周广甫]成了敏感词，我已经肯定了，郭德纲活不过这次了。好了，[http://www.google.com/search?hl=en&source=hp&q=%E6%9D%8E%E8%8F%81+%E4%BD%95%E4%BA%91%E4%BC%9F&btnG=Google+Search&aq=f&aqi=&aql=&oq=&gs_rfai= 李菁、何云伟]退了，搜一下，敏感词啊。我明白了，这次要把他往死里整，又一次文革的序幕拉开啦～～ 
+
+ 我还想在说一句，这次打人固然不对，但我们有理由支持他。郭德纲作为一个文化符号，支持他也就是支持我们想保留的文化，而满中国似乎也只有他一个人在与这个体制的“主流”文化对抗下取得了些许成功。 
+
+ 当然如果你觉得这文化真的像CCAV所讲的那么“三俗”，而你又那么高尚，那也就算了。 
+
+ http://i37.tinypic.com/2qdbimr.jpg
+
+ == 外部链接 ==
+ 
+ 特整理相关视频如下，按时间顺序整理，看过各位心中自有决断：
+
+ [http://v.youku.com/v_show/id_XMTkzNDAzNzAw.html 郭德纲被指盖违建与物业方面各执一词 100728 每日文娱播报]
+
+ [http://v.youku.com/v_show/id_XMTk0NzMwNDE2.html 记者调查采访遇暴力阻拦郭德纲家人否认打人事实 100802 每日文娱播报]
+
+ [http://www.56.com/u23/v_NTQwMTQ0MTI.html 周广甫召开发布会，怒斥郭德纲并要求书面道歉(上)]
+
+ [http://www.56.com/u92/v_NTQwMzAzMjE.html 周广甫召开发布会，怒斥郭德纲并要求书面道歉(下)]
+
+ [http://v.youku.com/v_show/id_XMTk1Mjc3ODQ4.html 郭德纲家人打人完整版]
+
+ [http://www.56.com/u74/v_NTQwMTU2MDc.html 郭德纲弟子殴打周广甫真相 小区监控器视频]
+
+ [http://v.youku.com/v_show/id_XMTk0ODEzODI4.html 一声咳嗽引发的痛骂：郭德纲公开回应徒弟”打人“事件]
+
+ [http://video.sina.com.cn/p/ent/s/m/2010-08-03/171161074465.html 视频：德云社召开发布会 回应郭德纲弟子打人]
+ 
+ [http://www.chinanews.com.cn/yl/2010/08-03/2443709.shtml 郭德纲徒弟把人往死里打？记者含泪讲述被打过程]
+ 
+ [http://tieba.baidu.com/f?kz=848753357 郭德纲：就是有药业不给你吃（新浪博客原文已被删除）]
+
+ [http://news.xinmin.cn/rollnews/2010/08/07/6183526.html 德云社停演整改 郭德纲博客关闭出版物被下架]
+
+ [http://www.tudou.com/programs/view/_3RYDukAaTw/ 【原创】做人别太“周广甫”]
+
+=用户指南=
+
+感谢您安装了 Ease Link，以下内容将有助于您使用 Ease Link。
+
+==修复链接==
+
+Ease Link 可以修复专用链接，如果您在点击迅雷等专用链接时提示“此操作被浏览器拒绝！”等。您只需在该链接上点击右键，然后选择需要的操作即可。
+
+默认状态下 Ease Link 已经开启了“在页面载入时处理迅雷专用链接”功能，可以在加载页面后自动修复迅雷专用链接，您也可以选择开启自动修复 QQ 旋风链接功能。
+
+http://easelink.googlecode.com/svn/wiki/prompt_chrome.png
+
+http://easelink.googlecode.com/svn/wiki/fix_chrome.png
+
+==解码链接==
+
+[#%E7%BC%BA%E9%99%B7 （有缺陷）]
+
+当一个链接的链接地址符合迅雷、Flashget 和 QQ 旋风等软件的协议时，您只需在需要解码的链接上点击右键，Ease Link 便可对其进行修复。默认状态下“自动解码专用链接为常规链接”开启，即在菜单开启的同时^*^，该链接会被自动解码，您只需在菜单中选择您需要的操作即可。
+
+,,* 纳米盘并不支持自动解码，需要点击弹出菜单中的“解码此链接”菜单项。,,
+
+==转换链接==
+
+当您在网页上遇到文本网址时，只需将其选中，在右键菜单内选择“转换为链接”。转换时根据“自动解码专用链接为常规链接”选项决定是否解码。
+
+您可以用以下地址作为测试：
+
+thunder://QUFodHRwOi8vNDYuZHVvdGUub3JnL3RodW5kZXI1LmV4ZVpa
+
+Flashget://W0ZMQVNIR0VUXWh0dHA6Ly9kbC1zaC1vY24tMS5wY2hvbWUubmV0LzF3L3RnL2ZnY25fNTIzLnJhcltGTEFTSEdFVF0=&5769
+
+==配置==
+
+打开[chrome://extensions 扩展程序]，点击 Ease Link 条目下的选项。
+
+  * *自动解码专用链接为常规链接* 开启时，Ease Link 将尽可能自动对链接进行解码，而不需您在右键菜单中点击“解码此链接”。
+  * *在页面载入时处理迅雷专用链接* 开启时，Ease Link 会在页面加载完成后自动修复迅雷专用链接。
+  * *在页面载入时处理 QQ 旋风专用链接* 开启时，Ease Link 会在页面加载完成后自动修复 QQ 旋风专用链接。
+
+*注意* 如果您发现 Ease Link 有损您的浏览器性能，请关闭“在页面载入时处理XX专用链接”选项。
+
+==处理全部链接==
+
+[#%E7%BC%BA%E9%99%B7 （有缺陷）]
+
+您可以要求 Ease Link 处理页面上的全部链接。在页面空白处点击右键，点击弹出菜单中的“处理全部链接”。此时 Ease Link 将会处理页面上的所有^**^支持协议的链接。同时根据“自动解码专用链接为常规链接”选项解码页面上的链接，如果“自动解码链接”选项关闭，则不在处理时自动解码。
+
+,,** 为保证性能，只处理页面的前 2000 个链接，重复调用也不会处理更多的链接。,,
+
+==从其他扩展调用==
+
+您可以从其他插件调用 Ease Link 进行手动的链接处理。
+
+从其他插件的 Content Script 中调用：
+{{{
+chrome.extension.sendRequest('mnbllbbekhlliaedopijladkbckldcbb', {
+  topic: 'fix'
+});
+}}}
+
+从其他插件的 Pages 中调用：
+{{{
+chrome.extension.sendRequest('mnbllbbekhlliaedopijladkbckldcbb', {
+  topic: 'fix',
+  tabId: tab.id
+});
+}}}
+
+其中：
+  * `fix` 亦可为 `processAll`。
+  * `tab.id` 指定需要进行处理的 Tab ID。
+
+=支持协议列表=
+
+||*协议*||*说明*||*支持自动处理*||*可修复*||*可解码*||
+||thunder||迅雷专用链接||是||是||是||
+||qqdl||QQ 旋风专用链接||是||是||是||
+||fs2you||RayFile||否||否（不需要）||是||
+||flashget||Flashget专用链接||否||是||是||
+||tencent||QQ 临时聊天||否||是||否||
+||#namipan||纳米盘||否||否（不需要）||是||
+
+
+=缺陷=
+
+  # 由于 chrome.contextMenus.`*` API 尚不完善，所以不能隐藏部分菜单项，故“解码此链接”、“转换为链接”等可能始终显示。同时，纳米盘下载链接上不能显示“解码此链接”，需要点击“处理全部链接”来解决问题。
+  # 由于 chrome 对 XPath 的支持并不完善，性能上也有较大的缺陷，所以[Add_New_Protocol 添加对新协议的支持]中所描述的 xpath 字段不可用。使用 match 字段暂做替代。由此，不能处理某类链接的前 n 个链接，只能处理页面上的前 n 个链接，但受惠于 Chrome 的高效 DOM 操作，性能可以得到保障。页面前 2000 个链接属于比较夸张的界定，全球网页的平均链接数为 140，国内的门户的链接数也不过 1000 左右，可以满足要求。
+
+=扩展阅读=
+
+  * [Troubles 人造烦恼]
+  * [Add_New_Protocol 添加对新协议的支持]
