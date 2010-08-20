@@ -1,4 +1,4 @@
-function PrefBranch (prefix) {
+﻿function PrefBranch (prefix) {
   this.prefix = prefix;
 }
 

@@ -1,4 +1,4 @@
-const UrlPattern = /^(([a-zA-Z][0-9a-zA-Z+\-\.]*\:)?\/{0,2}([0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]+))?([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
+﻿const UrlPattern = /^(([a-zA-Z][0-9a-zA-Z+\-\.]*\:)?\/{0,2}([0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]+))?([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
 const Base64Pattern = /^([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
 const PartialBase64Pattern = /([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}/g;
 
@@ -185,8 +185,6 @@ const ContextMenu = {
       while (link && link.tagName != 'A')
         link = link.parentNode;
       if (this._link = link) {
-        var orghref = link.getAttribute('href');
-        var plain = settings.plain;
         var fixed = false;
         var found = false;
         for (var key in Protocols) {
@@ -203,7 +201,7 @@ const ContextMenu = {
           found = true;
         }
         if (fixed || found) {
-          if (!plain)
+          if (!settings.plain)
             this._decodable = !!this._decode;
           else if (this._decode)
             this._decode(link);
@@ -212,8 +210,10 @@ const ContextMenu = {
     }
     chrome.extension.sendRequest({
       topic: 'changeMenuItemVisibility',
-      decodable: this._decodable,
-      convertable: this._convertable
+      change: {
+        decode: this._decodable,
+        convert: this._convertable
+      }
     });
   }
 };

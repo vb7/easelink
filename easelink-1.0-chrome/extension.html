@@ -1,8 +1,7 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
-<title></title>
 </head>
 <body>
 <script type="text/javascript" src="PrefBranch.js"></script>
@@ -55,7 +54,6 @@ const MenuItems = {
       type: 'normal',
       title: chrome.i18n.getMessage('contextmenu_decode_label'),
       contexts: ['link'],
-      //targetUrlPatterns: ['thunder://*/*', 'qqdl://*/*', 'flashget://*/*', 'fs2you://*/*', 'http://wpa.qq.com/*'],
       onclick: function (aContext, aTab) {
         chrome.tabs.sendRequest(aTab.id, {topic: 'decode'});
       }
@@ -77,13 +75,28 @@ const MenuItems = {
 
 var extension = {
 	handleRequest: function (aRequest, aSender, aSendResponse) {
-		console.log(extension, aRequest, aSender);
     switch (aRequest.topic) {
       case 'changeMenuItemVisibility':
-        //no solution yet.
+/*
+        for (var key in aRequest.change)
+          if (key in MenuItem)
+            chrome.contextMenus.update(MenuItem[key].id, {
+              visibility: aRequest.change[key]
+            });
+*/
         break;
       case 'getConfig':
         aSendResponse(settings);
+        break;
+    }
+  },
+  handleRequestExternal: function (aRequest, aSender, aSendResponse) {
+    if (!aSender.tab && !aRequest.tabId) return;
+    var tabId = aRequest.tabId || aSender.tab.id;
+    switch (aRequest.topic) {
+      case 'fix':
+      case 'processAll':
+        chrome.tabs.sendRequest(tabId, {topic: 'process'});
         break;
     }
   },
@@ -100,7 +113,6 @@ var extension = {
     }
   },
 	handlePrefBranchChange: function (e) {
-    //console.log(this, arguments);
 		if (e.key in settings)
 			settings[e.key] = JSON.parse(e.newValue);
     chrome.windows.getAll({ populate: true }, extension.handleAllWindow);
@@ -108,11 +120,11 @@ var extension = {
   init: function () {
     for (var key in MenuItems) {
       var item = MenuItems[key];
-      item.id = chrome.contextMenus.create(item.settings, item.handler);
+      item.id = chrome.contextMenus.create(item.settings);
     }
     chrome.extension.onRequest.addListener(this.handleRequest);
+    chrome.extension.onRequestExternal.addListener(this.handleRequestExternal);
     window.addEventListener('storage', this.handlePrefBranchChange);
-    
   }
 };
 

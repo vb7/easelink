@@ -26,7 +26,7 @@
     "description": "The name of QQ Xuanfeng Download Manager."
   },
   "options_plain_label": {
-    "message": "Decoding URLs of Private Protocol",
+    "message": "Automatically Decode URLs of Private Protocol",
     "description": "Options page: check this option to decode URLs like thunder://* to http://* or ftp://* without user interaction."
   },
   "contextmenu_process_label": {

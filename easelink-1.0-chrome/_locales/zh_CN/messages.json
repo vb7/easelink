@@ -22,11 +22,11 @@
     "description": "迅雷下载管理器的名称。"
   },
   "options_qqxuanfeng_label": {
-    "message": "QQ 旋风",
+    "message": " QQ 旋风",
     "description": "QQ 旋风下载管理器的名称。"
   },
   "options_plain_label": {
-    "message": "解码专用链接为常规链接",
+    "message": "自动解码专用链接为常规链接",
     "description": "选项页：启动该选项时将把 thunder://* 等特殊协议地址解码为 http://*、ftp://* 等常规地址。"
   },
   "contextmenu_process_label": {
