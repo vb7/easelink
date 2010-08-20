@@ -1,4 +1,4 @@
-﻿#summary 用户指南。
+﻿#summary Chrome 用户指南。
 #labels Featured,Phase-Guide,Browser-Chrome
 
 =声援郭德纲=
