@@ -155,55 +155,58 @@ const ContextMenu = {
   _decode: null,
   _selection : null,
   _selurl : "",
+  _decodable: false,
+  _convertable: false,
   _convert: function () {
     var range = this._selection.getRangeAt(0);
-    var frag = range.extractContents();
-    var link = frag.ownerDocument.createElement('a');
+    var link = document.createElement('a');
     link.setAttribute('href', this._selurl);
     link.setAttribute('target', '_blank');
     if (settings.plain && this._decode) this._decode(link);
-    link.appendChild(frag);
+    link.appendChild(range.extractContents());
     range.insertNode(link);
   },
   handleEvent: function (e) {
-    var link = this._link = e.target;
+    //console.log(e);
     this._decodable = false;
     this._convertable = false;
-    if (link.tagName == 'A') {
-      var orghref = link.getAttribute('href');
-      var plain = settings.plain;
-      var fixed = false;
-      var found = false;
-      for (var key in Protocols) {
-        var protocol = Protocols[key];
-        //if (document.evaluate('.' + protocol.xpath, link, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
-        if (protocol.match(link)) {
-          if ('fix' in protocol) protocol.fix(link);
-          this._decode = protocol.decode;
-          fixed = true;
-          break;
-        }
-      }
-      if (!fixed && (link.protocol in Protocols)) {
-        this._decode = Protocols[link.protocol].decode;
-        found = true;
-      }
-      if (fixed || found) {
-        if (!plain)
-          this._decodable = !!this._decode;
-        else if (this._decode)
-          this._decode(link);
+    var selection = window.getSelection();
+    if (!selection.isCollapsed) {
+      var text, match, protocol;
+      if (selection.rangeCount == 1 && (text = selection.toString().trim()) && text.length < 1000
+          && (match = UrlPattern.exec(text)) && match[2] && (protocol = match[2].toLowerCase()) in Protocols) {
+        this._selection = selection;
+        this._decode = Protocols[protocol].decode;
+        this._selurl = text;
+        this._convertable = true;
       }
     } else {
-      var selection = this._selection = window.getSelection();
-      if (!selection.isCollapsed) {
-        var text, match, protocol;
-        if (selection.rangeCount == 1 && (text = selection.toString().trim()) && text.length < 1000
-            && (match = UrlPattern.exec(text)) && match[2] && (protocol = match[2].toLowerCase()) in Protocols) {
-          this._selection = selection;
-          this._decode = Protocols[protocol].decode;
-          this._selurl = text;
-          this._convertable = true;
+      var link = e.target;
+      while (link && link.tagName != 'A')
+        link = link.parentNode;
+      if (this._link = link) {
+        var orghref = link.getAttribute('href');
+        var plain = settings.plain;
+        var fixed = false;
+        var found = false;
+        for (var key in Protocols) {
+          var protocol = Protocols[key];
+          if (protocol.match(link)) {
+            if ('fix' in protocol) protocol.fix(link);
+            this._decode = protocol.decode;
+            fixed = true;
+            break;
+          }
+        }
+        if (!fixed && (link.protocol in Protocols)) {
+          this._decode = Protocols[link.protocol].decode;
+          found = true;
+        }
+        if (fixed || found) {
+          if (!plain)
+            this._decodable = !!this._decode;
+          else if (this._decode)
+            this._decode(link);
         }
       }
     }
@@ -218,10 +221,10 @@ const ContextMenu = {
 const extension = {
   _enabledAPs: {},
   handleRequest: function (aRequest, aSender, aResponse) {
-    //console.log(extension, arguments);
+    console.log(extension, arguments);
     switch (aRequest.topic) {
       case 'decode':
-        if (ContextMenu._decodable) ContextMenu._decode(extension._link);
+        if (ContextMenu._decodable) ContextMenu._decode(ContextMenu._link);
         break;
       case 'convert':
         if (ContextMenu._convertable) ContextMenu._convert();
