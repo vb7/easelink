@@ -1,5 +1,5 @@
 ﻿#summary 用户指南。
-#labels Featured,Phase-Guide
+#labels Featured,Phase-Guide,Browser-Firefox
 
 =声援郭德纲=
 
