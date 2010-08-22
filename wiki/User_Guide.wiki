@@ -15,9 +15,9 @@
 
 两地址您任选：
 
-墙外的是（Google Docs）：http://bit.ly/aQTZQK
-
 墙里的是（问卷星）：http://bit.ly/bkMZlp
+
+墙外的是（Google Docs）：http://bit.ly/aQTZQK
 
 ==修复链接==
 
