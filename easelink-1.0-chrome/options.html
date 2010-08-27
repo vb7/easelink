@@ -8,21 +8,13 @@
 <script type="text/javascript">
 window.addEventListener('load', function () {
   var prefBranch = new PrefBranch('');
-  var auto_prefs = ['thunder', 'qqxuanfeng'];
-
-  function eventHandler(e) {
+  function handleChange(e) {
     prefBranch.setBoolPref(e.target.name, e.target.checked);
-    if (auto_prefs.indexOf(e.target.name) > -1) {
-      var auto = false;
-      for (var i = 0; !auto && i < auto_prefs.length; i++)
-        auto = auto || prefBranch.getBoolPref(auto_prefs[i]);
-      prefBranch.setBoolPref('auto', auto);
-    }
   }
   var inputs = document.getElementsByTagName('input');
   for (var i = 0; i < inputs.length; i++) {
     inputs[i].checked = prefBranch.getBoolPref(inputs[i].name);
-    inputs[i].addEventListener('change', eventHandler);
+    inputs[i].addEventListener('change', handleChange);
     var i18nkeys = inputs[i].title.split(',');
     inputs[i].nextSibling.innerHTML = chrome.i18n.getMessage(i18nkeys[0], [chrome.i18n.getMessage(i18nkeys[1])]);
   }
