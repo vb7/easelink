@@ -2,7 +2,7 @@
 const Base64Pattern = /^([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
 const PartialBase64Pattern = /([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}/g;
 
-var settings;
+var gSettings;
 
 function fixedEscape(str) {
   return str.replace(/[^0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%\?\#]+/g, escape);
@@ -162,7 +162,7 @@ const ContextMenu = {
     var link = document.createElement('a');
     link.setAttribute('href', this._selurl);
     link.setAttribute('target', '_blank');
-    if (settings.plain && this._decode) this._decode(link);
+    if (gSettings.plain && this._decode) this._decode(link);
     link.appendChild(range.extractContents());
     range.insertNode(link);
   },
@@ -201,7 +201,7 @@ const ContextMenu = {
           found = true;
         }
         if (fixed || found) {
-          if (!settings.plain)
+          if (!gSettings.plain)
             this._decodable = !!this._decode;
           else if (this._decode)
             this._decode(link);
@@ -230,23 +230,11 @@ const extension = {
         if (ContextMenu._convertable) ContextMenu._convert();
         break;
       case 'updateConfig':
-        extension.updateSettings(aRequest.settings);
+        gSettings = aRequest.settings;
         break;
       case 'process':
         extension.process();
         break;
-    }
-  },
-  updateSettings: function (aSettings) {
-    settings = aSettings;
-    for (var key in AutomaticProtocols) {
-      var exp = settings[key];
-      if ((key in this._enabledAPs) ^ exp) {
-        if (exp)
-          this._enabledAPs[key] = AutomaticProtocols[key];
-        else
-          delete this._enabledAPs[key];
-      }
     }
   },
   autoProcess: function() {
@@ -257,7 +245,7 @@ const extension = {
         var protocol = this._enabledAPs[key];
         if (protocol.match(node)) {
           protocol.fix(node);
-          if (settings.plain) protocol.decode(node);
+          if (gSettings.plain) protocol.decode(node);
           break;
         }
       }
@@ -271,16 +259,22 @@ const extension = {
         var protocol = Protocols[key];
         if (protocol.match(node)) {
           if ('fix' in protocol) protocol.fix(node);
-          if (settings.plain && 'decode' in protocol) protocol.decode(node);
+          if (gSettings.plain && 'decode' in protocol) protocol.decode(node);
           break;
         }
       }
     }
   },
   init: function () {
-    chrome.extension.sendRequest({ topic: 'getConfig' }, function(s) {
-      extension.updateSettings(s);
-      if (settings.auto) extension.autoProcess();
+    chrome.extension.sendRequest({ topic: 'getConfig' }, function(aSettings) {
+      gSettings = aSettings;
+      var auto = false;
+      for (var key in AutomaticProtocols)
+        if (gSettings[key]) {
+          extension._enabledAPs[key] = AutomaticProtocols[key];
+          auto = true;
+        }
+      if (auto) extension.autoProcess();
     });
     chrome.extension.onRequest.addListener(this.handleRequest);
     window.addEventListener('contextmenu', ContextMenu);
