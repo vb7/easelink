@@ -81,8 +81,8 @@ var extension = {
             chrome.contextMenus.update(MenuItems[key].id, {
               hidden: !aRequest.change[key]
             });
-        break;
       */
+        break;
       case 'getConfig':
         aSendResponse(settings);
         break;
@@ -110,11 +110,11 @@ var extension = {
       }
     }
   },
-	handlePrefBranchChange: function (e) {
-		if (e.key in settings)
-			settings[e.key] = JSON.parse(e.newValue);
-    chrome.windows.getAll({ populate: true }, extension.handleAllWindow);
-	},
+  handlePrefBranchChange: function (e) {
+    if (e.key in settings)
+      settings[e.key] = JSON.parse(e.newValue);
+        chrome.windows.getAll({ populate: true }, extension.handleAllWindow);
+  },
   init: function () {
     for (var key in MenuItems) {
       var item = MenuItems[key];
