@@ -2,7 +2,7 @@
 const Base64Pattern = /^([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}$/;
 const PartialBase64Pattern = /([a-zA-Z][0-9a-zA-Z+\-\.]*\:)\/\/((?:[A-Za-z0-9\+\/]{4})+(?:[A-Za-z0-9\+\/]{2}==|[A-Za-z0-9\+\/]{3}=)?)([#\?](?:[0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%]*)){0,2}/g;
 
-var gSettings;
+var gSettings = {};
 
 function fixedEscape(str) {
   return str.replace(/[^0-9a-zA-Z;\/:@&=\+\$\.\-_\!~\*'\(\)%\?\#]+/g, escape);
@@ -28,37 +28,22 @@ function defaultDecoder(prelen, suflen) {
   };
 }
 
-function defaultMatcher(attname) {
-  return function (node) {
-    return node.hasAttribute(attname);
-  };
-}
-
 /* IProtocol Definitions */
 
 const IAutomaticProtocolThunder = {
-  //xpath: '[@thunderhref]',
-  match: defaultMatcher('thunderhref'),
+  xpath: '[@thunderhref]',
   fix: defaultFixer('thunderhref'),
   decode: defaultDecoder(2, 2)
 };
 
 const IAutomaticProtocolQQXuanFeng = {
-  //xpath: '[@qhref]',
-  match: defaultMatcher('qhref'),
+  xpath: '[@qhref]',
   fix: defaultFixer('qhref'),
   decode: defaultDecoder(0, 0)
 };
 
 const IProtocolFlashget = {
-  //xpath: "[count(@*[contains(translate(., 'FLASHGET', 'flashget'), 'flashget://')])>0]",
-  match: function (node) {
-    var attrs = node.attributes;
-    for (var i = 0; i < attrs.length; i++)
-      if (attrs[i].value.toLowerCase().indexOf('flashget://') > -1)
-        return true;
-    return false;
-  },
+  xpath: "[count(@*[contains(translate(., 'FLASHGET', 'flashget'), 'flashget://')])>0]",
   fix: function (node) {
     var match;
     if (node.protocol != 'flashget:')
@@ -82,10 +67,7 @@ const IProtocolFlashget = {
 };
 
 const IProtocolRayFile = {
-  //xpath: "[@href and translate(substr(@href, 1, 7), 'FSYOU', 'fsyou') = 'fs2you:']",
-  match: function (node) {
-    return node.protocol == 'fs2you:';
-  },
+  xpath: "[@href and translate(substring(@href, 1, 7), 'FSYOU', 'fsyou') = 'fs2you:']",
   decode: function (node) {
     var url = node.getAttribute('href');
     var match;
@@ -97,10 +79,7 @@ const IProtocolRayFile = {
 };
 
 const IProtocolQQTemporary = {
-  //xpath: "[@href and translate(substr(@href, 1, 19), 'HTPWAQCOM', 'htpwaqcom') = 'http://wpa.qq.com/']",
-  match: function (node) {
-    return node.host == 'wpa.qq.com';
-  },
+  xpath: "[@href and translate(substring(@href, 1, 19), 'HTPWAQCOM', 'htpwaqcom') = 'http://wpa.qq.com/']",
   fix: function (node) {
     var url = node.getAttribute('href');
     var matches = UrlPattern.exec(url), params;
@@ -122,10 +101,7 @@ const IProtocolQQTemporary = {
 };
 
 const IProtocolNamipan = {
-  //xpath: "[@href and translate(substr(@href, 1, 12), 'JAVSCRIPT', 'javscript') = 'javascript:' and contains(translate(@href, 'NAMIPCO', 'namipco'), '.namipan.com')]",
-  match: function (node) {
-    return node.protocol == 'javascript:' && node.href.indexOf('.namipan.com') > -1;
-  },
+  xpath: "[@href and translate(substring(@href, 1, 12), 'JAVSCRIPT', 'javscript') = 'javascript:' and contains(translate(@href, 'NAMIPCO', 'namipco'), '.namipan.com')]",
   decode: function (node) {
     var url = node.getAttribute('href').split("'");
     if (url.length == 3)
@@ -166,8 +142,8 @@ const ContextMenu = {
     link.appendChild(range.extractContents());
     range.insertNode(link);
   },
-  handleEvent: function (e) {
-    //console.log(e);
+  handleEvent: function (evt) {
+    //console.log(evt);
     this._decodable = false;
     this._convertable = false;
     var selection = window.getSelection();
@@ -181,7 +157,7 @@ const ContextMenu = {
         this._convertable = true;
       }
     } else {
-      var link = e.target;
+      var link = evt.target;
       while (link && link.tagName != 'A')
         link = link.parentNode;
       if (this._link = link) {
@@ -189,7 +165,7 @@ const ContextMenu = {
         var found = false;
         for (var key in Protocols) {
           var protocol = Protocols[key];
-          if (protocol.match(link)) {
+          if (document.evaluate('self::node()' + protocol.xpath, link, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
             if ('fix' in protocol) protocol.fix(link);
             this._decode = protocol.decode;
             fixed = true;
@@ -238,30 +214,28 @@ const extension = {
     }
   },
   autoProcess: function() {
-    var nodes = document.getElementsByTagName('a');
-    for (var i = 0, node, u = Math.min(nodes.length, 400); i < u; i++) {
-      var node = nodes[i];
-      for (var key in this._enabledAPs) {
-        var protocol = this._enabledAPs[key];
-        if (protocol.match(node)) {
-          protocol.fix(node);
-          if (gSettings.plain) protocol.decode(node);
-          break;
-        }
+    var iterator, node, nodes = [];
+    for (var key in extension._enabledAPs) {
+      var protocol = extension._enabledAPs[key];
+      iterator = document.evaluate('self::node()//a' + protocol.xpath, document.documentElement, null, XPathResult.ANY_TYPE, null);
+      while (!iterator.invalidIteratorState && (node = iterator.iterateNext()) && nodes.length <= 10)
+        nodes.push(node);
+      while ((node = nodes.pop()) || nodes.length) {
+        protocol.fix(node);
+        if (gSettings.plain) protocol.decode(node);
       }
     }
   },
-  process: function(doc) {
-    var nodes = document.getElementsByTagName('a');
-    for (var i = 0, node, u = Math.min(nodes.length, 2000); i < u; i++) {
-      var node = nodes[i];
-      for (var key in Protocols) {
-        var protocol = Protocols[key];
-        if (protocol.match(node)) {
-          if ('fix' in protocol) protocol.fix(node);
-          if (gSettings.plain && 'decode' in protocol) protocol.decode(node);
-          break;
-        }
+  process: function() {
+    var iterator, node, nodes = [];
+    for (var key in Protocols) {
+      var protocol = Protocols[key];
+      iterator = document.evaluate('self::node()//a' + protocol.xpath, document.documentElement, null, XPathResult.ANY_TYPE, null);
+      while (!iterator.invalidIteratorState && (node = iterator.iterateNext()) && nodes.length <= 50)
+        nodes.push(node);
+      while ((node = nodes.pop()) || nodes.length) {
+        if ('fix' in protocol) protocol.fix(node);
+        if (gSettings.plain && 'decode' in protocol) protocol.decode(node);
       }
     }
   },
