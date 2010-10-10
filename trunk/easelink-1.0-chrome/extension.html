@@ -113,7 +113,7 @@ var extension = {
   handlePrefBranchChange: function (e) {
     if (e.key in settings)
       settings[e.key] = JSON.parse(e.newValue);
-        chrome.windows.getAll({ populate: true }, extension.handleAllWindow);
+    chrome.windows.getAll({ populate: true }, extension.handleAllWindow);
   },
   init: function () {
     for (var key in MenuItems) {
