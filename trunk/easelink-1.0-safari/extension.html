@@ -1,0 +1,76 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<script type="text/javascript">
+const Version = '$VER$';
+
+//initialize settings
+
+const FirstRunURL = "http://code.google.com/p/easelink/wiki/User_Guide_Safari?wl=en-US";
+
+if (safari.extension.settings.ver != Version) {
+  if (safari.extension.settings.ver == '')
+    safari.application.activeBrowserWindows.openTab("foreground").url = FirstRunURL;
+  safari.extension.settings.ver = Version;
+}
+
+var settings = {
+	plain: safari.extension.settings.plain,
+	thunder: safari.extension.settings.thunder,
+	qqxuanfeng: safari.extension.settings.qqxuanfeng
+};
+
+//initialize constants
+
+const MenuItems = {
+  process: 'Process All Links',
+  decode: 'Decode This Link',
+  convert: 'Convert To A Link'
+};
+
+//classes
+
+var extension = {
+	handleRequest: function (evt) {
+    //console.log(evt);
+    switch (evt.name) {
+      case 'getConfig':
+        evt.target.page.dispatchMessage('init', settings);
+        break;
+    }
+  },
+  handleMenuCommand: function (evt) {
+    safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(evt.command);
+  },
+  handleContextMenu: function(evt) {
+    //console.log(evt);
+    for (var key in MenuItems)
+      if (evt.userInfo[key])
+        evt.contextMenu.appendContextMenuItem(key, MenuItems[key]);
+  },
+  handlePrefBranchChange: function (evt) {
+    if (evt.key in settings)
+      settings[evt.key] = JSON.parse(evt.newValue);
+    var wins = safari.application.browserWindows;
+    for (var i = 0, tabs; i < wins.length; i++) {
+      tabs = wins[i].tabs;
+      for (var j = 0; j < tabs.length; j++)
+        tabs[j].page.dispatchMessage('updateConfig', settings);
+    }
+  },
+  init: function () {
+    safari.application.addEventListener("contextmenu", this.handleContextMenu, false);
+    safari.application.addEventListener("message", this.handleRequest, true);
+    safari.application.addEventListener("command", this.handleMenuCommand, true);
+    safari.extension.settings.addEventListener("change", this.handlePrefBranchChange, true);
+  }
+};
+
+extension.init();
+
+</script>
+</body>
+</html>
