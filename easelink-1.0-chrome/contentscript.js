@@ -147,7 +147,32 @@ const ContextMenu = {
     this._decodable = false;
     this._convertable = false;
     var sel = window.getSelection();
-    if (!sel.isCollapsed) {
+    var link = evt.target;
+    while (link && link.tagName != 'A')
+      link = link.parentNode;
+    if (this._link = link) {
+      var fixed = false;
+      var found = false;
+      for (var key in Protocols) {
+        var protocol = Protocols[key];
+        if (document.evaluate('self::node()' + protocol.xpath, link, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+          if ('fix' in protocol) protocol.fix(link);
+          this._decode = protocol.decode;
+          fixed = true;
+          break;
+        }
+      }
+      if (!fixed && (link.protocol in Protocols)) {
+        this._decode = Protocols[link.protocol].decode;
+        found = true;
+      }
+      if (fixed || found) {
+        if (!gSettings.plain)
+          this._decodable = !!this._decode;
+        else if (this._decode)
+          this._decode(link);
+      }
+    } else if (!sel.isCollapsed) {
       var text, match, protocol;
       if (sel.rangeCount == 1 && (text = sel.toString().trim()) && text.length < 1000
           && (match = UrlPattern.exec(text)) && match[2] && (protocol = match[2].toLowerCase()) in Protocols) {
@@ -155,33 +180,6 @@ const ContextMenu = {
         this._decode = Protocols[protocol].decode;
         this._selurl = text;
         this._convertable = true;
-      }
-    } else {
-      var link = evt.target;
-      while (link && link.tagName != 'A')
-        link = link.parentNode;
-      if (this._link = link) {
-        var fixed = false;
-        var found = false;
-        for (var key in Protocols) {
-          var protocol = Protocols[key];
-          if (document.evaluate('self::node()' + protocol.xpath, link, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
-            if ('fix' in protocol) protocol.fix(link);
-            this._decode = protocol.decode;
-            fixed = true;
-            break;
-          }
-        }
-        if (!fixed && (link.protocol in Protocols)) {
-          this._decode = Protocols[link.protocol].decode;
-          found = true;
-        }
-        if (fixed || found) {
-          if (!gSettings.plain)
-            this._decodable = !!this._decode;
-          else if (this._decode)
-            this._decode(link);
-        }
       }
     }
     chrome.extension.sendRequest({
