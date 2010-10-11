@@ -31,6 +31,8 @@
 		<string>CheckBox</string>
 	</dict>
 	<dict>
+		<key>DefaultValue</key>
+		<false/>
 		<key>Key</key>
 		<string>qqxuanfeng</string>
 		<key>Title</key>

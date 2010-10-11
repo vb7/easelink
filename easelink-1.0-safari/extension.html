@@ -47,14 +47,15 @@ var extension = {
   },
   handleContextMenu: function(evt) {
     console.log(evt);
-    if(evt.userInfo instanceof Object)
+    if (evt.userInfo)
       for (var key in MenuItems)
         if (evt.userInfo[key])
           evt.contextMenu.appendContextMenuItem(key, MenuItems[key]);
   },
   handlePrefBranchChange: function (evt) {
+    console.log(evt);
     if (evt.key in settings)
-      settings[evt.key] = JSON.parse(evt.newValue);
+      settings[evt.key] = evt.newValue;
     var wins = safari.application.browserWindows;
     for (var i = 0, tabs; i < wins.length; i++) {
       tabs = wins[i].tabs;
