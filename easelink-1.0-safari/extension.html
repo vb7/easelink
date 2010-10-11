@@ -35,7 +35,7 @@ const MenuItems = {
 
 var extension = {
 	handleRequest: function (evt) {
-    //console.log(evt);
+    console.log(evt);
     switch (evt.name) {
       case 'getConfig':
         evt.target.page.dispatchMessage('init', settings);
@@ -46,10 +46,11 @@ var extension = {
     safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(evt.command);
   },
   handleContextMenu: function(evt) {
-    //console.log(evt);
-    for (var key in MenuItems)
-      if (evt.userInfo[key])
-        evt.contextMenu.appendContextMenuItem(key, MenuItems[key]);
+    console.log(evt);
+    if(evt.userInfo instanceof Object)
+      for (var key in MenuItems)
+        if (evt.userInfo[key])
+          evt.contextMenu.appendContextMenuItem(key, MenuItems[key]);
   },
   handlePrefBranchChange: function (evt) {
     if (evt.key in settings)
