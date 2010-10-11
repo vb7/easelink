@@ -48,9 +48,9 @@ const IProtocolFlashget = {
     var match;
     if (node.protocol != 'flashget:')
       for (var i = 0; i < node.attributes.length; ++i)
-        if (match = PartialBase64Pattern.match(node.attributes[i].nodeValue) && match[1].toLowerCase() == 'flashget:') {
-          node.setAttribute('href', match[0]);
+        if ((match = PartialBase64Pattern.exec(node.attributes[i].nodeValue)) && match[1].toLowerCase() == 'flashget:') {
           node.removeAttribute(node.attributes[i].nodeName);
+          node.setAttribute('href', match[0]);
           break;
         }
     node.removeAttribute('oncontextmenu');
@@ -143,15 +143,15 @@ const ContextMenu = {
     range.insertNode(link);
   },
   handleEvent: function (evt) {
-    //console.log(evt);
+    console.log(evt);
     this._decodable = false;
     this._convertable = false;
-    var selection = window.getSelection();
-    if (!selection.isCollapsed) {
+    var sel = window.getSelection();
+    if (!sel.isCollapsed) {
       var text, match, protocol;
-      if (selection.rangeCount == 1 && (text = selection.toString().trim()) && text.length < 1000
+      if (sel.rangeCount == 1 && (text = sel.toString().trim()) && text.length < 1000
           && (match = UrlPattern.exec(text)) && match[2] && (protocol = match[2].toLowerCase()) in Protocols) {
-        this._selection = selection;
+        this._selection = sel;
         this._decode = Protocols[protocol].decode;
         this._selurl = text;
         this._convertable = true;
