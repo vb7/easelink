@@ -43,6 +43,8 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>http://easelink.googlecode.com/svn/trunk/easelink-1.0-safari/Updates.plist</string>
 	<key>Website</key>
 	<string>http://easelink.googlecode.com/</string>
 </dict>
