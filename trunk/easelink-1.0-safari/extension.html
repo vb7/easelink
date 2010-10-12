@@ -13,7 +13,7 @@ const FirstRunURL = "http://code.google.com/p/easelink/wiki/User_Guide_Safari?wl
 
 if (safari.extension.settings.ver != Version) {
   if (safari.extension.settings.ver == '')
-    safari.application.activeBrowserWindows.openTab("foreground").url = FirstRunURL;
+    safari.application.activeBrowserWindow.openTab("foreground").url = FirstRunURL;
   safari.extension.settings.ver = Version;
 }
 
