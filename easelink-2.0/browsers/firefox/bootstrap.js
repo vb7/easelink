@@ -27,11 +27,15 @@
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results: Cr, manager: Cm} = Components;
 Cu.import('resource://gre/modules/Services.jsm');
-const {io: Si, console: Sc} = Services;
+const {io: Si, prefs: Sp} = Services;
+#ifdef DEBUG
+const {console: Sc} = Services;
+#endif
 
 const Global = this;
 const kResHandler = Si.getProtocolHandler('resource').QueryInterface(Ci.nsIResProtocolHandler);
 const kAddonName = 'easelink';
+const kPrefBranch = 'extension.easelink'
 const kImports = ['i18n', 'easelink'];
 const kDefaultLocale = 'zh-CN';
 const kSupportLocales = ['zh-CN', 'en-US'];
@@ -41,7 +45,9 @@ const kProtocolSupportApplication = 0x2;
 const kProtocolSupportEaseLink = 0x4;
 
 function startup(data, reason) {
-  Sc.logStringMessage('startup');
+#ifdef DEBUG
+  Sc.logStringMessage('startup' + reason);
+#endif
   if (!data.resourceURI) {
     data.resourceURI = Si.newFileURI(data.installPath);
     if (!data.installPath.isDirectory())
@@ -56,7 +62,11 @@ function startup(data, reason) {
 }
 
 function shutdown(data, reason) {
-  Sc.logStringMessage('shutdown');
+#ifdef DEBUG
+  Sc.logStringMessage('shutdown' + reason);
+#endif
+  if (reason == APP_SHUTDOWN)
+    return;
   if (Cu.unload)
     for (var i = 0; i < kImports.length; i++)
       Cu.unload(resourceURI + kImports[i] + '.jsm');
@@ -64,11 +74,23 @@ function shutdown(data, reason) {
 }
 
 function install (data, reason) {
-  Sc.logStringMessage('install');
+#ifdef DEBUG
+  Sc.logStringMessage('install' + reason);
+#endif
+  if (reason == ADDON_INSTALL) {
+    var branch = Sp.getDefaultBranch(kPrefBranch);
+    Cs.logStringMessage
+  }
 }
 
 function uninstall(data, reason) {
-  Sc.logStringMessage('uninstall');
+#ifdef DEBUG
+  Sc.logStringMessage('uninstall' + reason);
+#endif
+  switch (reason == ADDON_UNINSTALL) {
+    Sp.getBranch(kPrefBranch).deleteBranch('');
+    Sp.getDefaultBranch(kPrefBranch).deleteBranch('');
+  }
 }
 
 function checkSupport() {
@@ -85,9 +107,11 @@ function checkSupport() {
        case Cr.NS_ERROR_UNKNOWN_PROTOCOL:
         result[handler.key] = kProtocolSupportMissing;
         break;
+#ifdef DEBUG
        default:
-        log('error: $1', e);
-      }
+        Sc.logStringMessage(e.toString());
+#endif
+       }
     }
   }
   return result;

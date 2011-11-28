@@ -3,12 +3,12 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>easelink@ashi.cn</em:id>
-    <em:version>2.2</em:version>
+    <em:id>easelink@xiaoyi.me</em:id>
+    <em:version>$VER$</em:version>
     <em:bootstrap>true</em:bootstrap>
     <em:unpack>true</em:unpack>
     <em:type>2</em:type>
-	<em:optionsType>2</em:optionsType>
+    <em:optionsType>2</em:optionsType>
     
     <!-- Firefox -->
     <em:targetApplication>
@@ -20,7 +20,7 @@
     </em:targetApplication>
 
     <em:name>Ease Link</em:name>
-    <em:creator>ashi</em:creator>
+    <em:creator>Xiaoyi</em:creator>
     <em:description>Fixing Thunder, QQ Xuanfeng, Flashget, Rayfile, Namipan, and QQ Temporary Chatting links. Converting URL text of above types on the webpage to a Hyperlink.</em:description>
     <em:homepageURL>http://easelink.googlecode.com/</em:homepageURL>
 
@@ -28,7 +28,7 @@
       <Description>
         <em:locale>zh-CN</em:locale>
         <em:name>Ease Link</em:name>
-        <em:creator>ashi</em:creator>
+        <em:creator>Xiaoyi</em:creator>
         <em:description>修复迅雷、QQ旋风、快车、RayFile、纳米盘和QQ临时聊天专用链接，转换网页上的上述种类 URL 文本为超链接。</em:description>
         <em:homepageURL>http://easelink.googlecode.com/</em:homepageURL>
       </Description>
