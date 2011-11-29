@@ -3,6 +3,9 @@ var EXPORTED_SYMBOLS = ['EaseLink'];
 const {classes: Cc, interfaces: Ci, utils: Cu, results: Cr, manager: Cm} = Components;
 Cu.import('resource://gre/modules/Services.jsm');
 const {io: Si} = Services;
+#ifdef DEBUG
+const {console: Sc} = Services;
+#endif
 
 const kClassName = 'Ease Link Protocol Handler';
 const kContractIDBase = '@mozilla.org/network/protocol;1?name=';
@@ -29,6 +32,7 @@ const kProtocolHandlerPrototype = {
     try {
       return Si.newURI(this.decode(aSpec), aOriginCharset, aBaseURI)
     } catch(e) {
+      debug(e.toString());
       return kFailedURI;
     }
   },

@@ -35,7 +35,7 @@ function $decode(prelen, suflen, url) {
   var match = kURIPattern.base64.exec(url);
   if (match) {
     url = atob(match[2]);
-    log('decoded: $1', encodeURI(url));
+    debug('decoded: ' + url);
     return encodeURI(url.substring(prelen, url.length - suflen));
   }
   return url;
@@ -55,6 +55,6 @@ function generateFix(attname) {
 
 function generateDecode(prelen, suflen) {
   return function(url) {
-    return $decode(preflen, suflen, url);
+    return $decode(prelen, suflen, url);
   };
 }

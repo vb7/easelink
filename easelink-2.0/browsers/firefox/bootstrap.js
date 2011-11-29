@@ -30,74 +30,97 @@ Cu.import('resource://gre/modules/Services.jsm');
 const {io: Si, prefs: Sp} = Services;
 #ifdef DEBUG
 const {console: Sc} = Services;
+const kReasonsString = {
+  1: 'APP_STARTUP',
+  2: 'APP_SHUTDOWN',
+  3: 'ADDON_ENABLE',
+  4: 'ADDON_DISABLE',
+  5: 'ADDON_INSTALL',
+  6: 'ADDON_UNINSTALL',
+  7: 'ADDON_UPGRADE',
+  8: 'ADDON_DOWNGRADE'
+};
 #endif
 
 const Global = this;
-const kResHandler = Si.getProtocolHandler('resource').QueryInterface(Ci.nsIResProtocolHandler);
+
+const kImports = ['i18n.js', 'easelink.js'];
+
 const kAddonName = 'easelink';
-const kPrefBranch = 'extension.easelink'
-const kImports = ['i18n', 'easelink'];
+const kResourceURI = 'resource://' + kAddonName + '/';
+const kPrefBranch = 'extension.easelink.';
+const kPrefFixerBranch = Sp.getBranch(kPrefBranch + 'fixer.').QueryInterface(Ci.nsIPrefBranch2);
+const kPrefProtocolBranch = Sp.getBranch(kPrefBranch + 'protocol.').QueryInterface(Ci.nsIPrefBranch2);
 const kDefaultLocale = 'zh-CN';
 const kSupportLocales = ['zh-CN', 'en-US'];
 
-const kProtocolSupportMissing = 0x1
-const kProtocolSupportApplication = 0x2;
-const kProtocolSupportEaseLink = 0x4;
+const kProtocolSupportUnknown = 1;
+const kProtocolSupportMissing = 2;
+const kProtocolSupportApplication = 3;
+const kProtocolSupportEaseLink = 4;
+
+const res = {
+  setup: function(data) {
+    var resourceURI = data.resourceURI;
+    if (!resourceURI) {
+      resourceURI = Si.newFileURI(data.installPath);
+      if (!installPath.isDirectory())
+        resourceURI = Si.newURI('jar:' + resourceURI.alias.spec + '!/', null, null);
+    }
+    Si.getProtocolHandler('resource')
+      .QueryInterface(Ci.nsIResProtocolHandler)
+      .setSubstitution(kAddonName, resourceURI);
+    for (var i = 0; i < kImports.length; i++)
+      Cu.import(kResourceURI + kImports[i]);
+  },
+  dispose: function() {
+    if (Cu.unload)
+      for (var i = 0; i < kImports.length; i++)
+        Cu.unload(kResourceURI + kImports[i]);
+    Si.getProtocolHandler('resource')
+      .QueryInterface(Ci.nsIResProtocolHandler)
+      .setSubstitution(kAddonName, null);
+  }
+};
 
 function startup(data, reason) {
-#ifdef DEBUG
-  Sc.logStringMessage('startup' + reason);
-#endif
-  if (!data.resourceURI) {
-    data.resourceURI = Si.newFileURI(data.installPath);
-    if (!data.installPath.isDirectory())
-      data.resourceURI = Si.newURI('jar:' + alias.spec + '!/', null, null);
-  }
-  kResHandler.setSubstitution(kAddonName, data.resourceURI);
-  Global.resourceURI = 'resource://' + kAddonName + '/';
-  data.resourceURI = Si.newURI(resourceURI, null, null);
-  for (var i = 0; i < kImports.length; i++)
-    Cu.import(resourceURI + kImports[i] + '.js');
-  Global.i18n = new I18N(kDefaultLocale, kSupportLocales, resourceURI + '_locale/');
+  debug('startup: ' + kReasonsString[reason]);
+  res.setup(data);
+  Global.i18n = new I18N(kDefaultLocale, kSupportLocales, kResourceURI + '_locale/');
+  prefs.setup();
 }
 
 function shutdown(data, reason) {
-#ifdef DEBUG
-  Sc.logStringMessage('shutdown' + reason);
-#endif
+  debug('shutdown: ' + kReasonsString[reason]);
   if (reason == APP_SHUTDOWN)
     return;
-  if (Cu.unload)
-    for (var i = 0; i < kImports.length; i++)
-      Cu.unload(resourceURI + kImports[i] + '.jsm');
-  kResHandler.setSubstitution(kAddonName, null);
+  for (var key in EaseLink.fixer.enabled)
+    EaseLink.disableFixer(key);
+  for (var key in EaseLink.protocolHandler.enabled)
+    EaseLink.disableProtocolHandler(key);
+  prefs.dispose();
+  i18n.dispose();
+  res.dispose();
 }
 
-function install (data, reason) {
-#ifdef DEBUG
-  Sc.logStringMessage('install' + reason);
-#endif
-  if (reason == ADDON_INSTALL) {
-    var branch = Sp.getDefaultBranch(kPrefBranch);
-    Cs.logStringMessage
-  }
+function install(data, reason) {
+  debug('install: ' + kReasonsString[reason]);
+  res.setup(data);
+  prefs.update(reason == ADDON_INSTALL || reason == ADDON_DOWNGRADE);
+  res.dispose();
 }
 
 function uninstall(data, reason) {
-#ifdef DEBUG
-  Sc.logStringMessage('uninstall' + reason);
-#endif
-  switch (reason == ADDON_UNINSTALL) {
+  debug('uninstall: ' + kReasonsString[reason]);
+  if (reason == ADDON_UNINSTALL || reason == ADDON_DOWNGRADE)
     Sp.getBranch(kPrefBranch).deleteBranch('');
-    Sp.getDefaultBranch(kPrefBranch).deleteBranch('');
-  }
 }
 
 function checkSupport() {
   var result = {};
   for each (var handler in EaseLink.protocolHandler.available) {
     try {
-      IOService.newChannel(handler.scheme + '://', null, null).owner;
+      Si.newChannel(handler.scheme + '://', null, null).owner;
       result[handler.key] = kProtocolSupportEaseLink;
     } catch (e) {
       switch (e.result) {
@@ -109,10 +132,54 @@ function checkSupport() {
         break;
 #ifdef DEBUG
        default:
-        Sc.logStringMessage(e.toString());
+        result[handler.key] = kProtocolSupportUnknown;
+        debug(e.toString());
 #endif
        }
     }
   }
   return result;
 }
+
+const prefs = {
+  update: function(override) {
+    debug('update prefs, override: ' + override);
+    //use user branch instead of default one, for data will lost when session ends.
+    var support = checkSupport();
+    for (var key in EaseLink.fixer.available)
+      if (override || kPrefFixerBranch.getPrefType(key) == 0)
+        kPrefFixerBranch.setBoolPref(key, true);
+    for (var key in EaseLink.protocolHandler.available)
+      if (override || kPrefProtocolBranch.getPrefType(key) == 0)
+        kPrefProtocolBranch.setBoolPref(key, support[key] == kProtocolSupportMissing);
+  },
+  setup: function() {
+    debug('setup prefs and install observers.');
+    for (var key in EaseLink.fixer.available)
+      if (kPrefFixerBranch.getBoolPref(key))
+        EaseLink.enableFixer(key);
+    for (var key in EaseLink.protocolHandler.available) 
+      if (kPrefProtocolBranch.getBoolPref(key))
+        EaseLink.enableProtocolHandler(key);
+    kPrefFixerBranch.addObserver('', this.onFixerPrefChange, false);
+    kPrefProtocolBranch.addObserver('', this.onProtocolPrefChange, false);
+  },
+  dispose: function() {
+    kPrefFixerBranch.removeObserver('', this.onFixerPrefChange);
+    kPrefProtocolBranch.removeObserver('', this.onProtocolPrefChange);
+  },
+  onFixerPrefChange: function(branch, topic, key) {
+    assert(topic == 'nsPref:changed');
+    if (branch.getBoolPref(key))
+      EaseLink.enableFixer(key);
+    else
+      EaseLink.disableFixer(key);
+  },
+  onProtocolPrefChange: function(branch, topic, key) {
+    assert(topic == 'nsPref:changed');
+    if (branch.getBoolPref(key))
+      EaseLink.enableProtocolHandler(key);
+    else
+      EaseLink.disableProtocolHandler(key);
+  }
+};
