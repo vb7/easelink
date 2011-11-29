@@ -3,7 +3,7 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>easelink@xiaoyi.me</em:id>
+    <em:id>easelink@ashi.cn</em:id>
     <em:version>$VER$</em:version>
     <em:bootstrap>true</em:bootstrap>
     <em:unpack>true</em:unpack>

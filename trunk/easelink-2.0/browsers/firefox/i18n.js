@@ -28,7 +28,10 @@
 const {utils: Cu} = Components;
 Cu.import('resource://gre/modules/Services.jsm');
 Cu.import("resource://gre/modules/PluralForm.jsm");
-const {strings: Ss, locale: Sl, console: Sc} = Services;
+const {strings: Ss, locale: Sl} = Services;
+#ifdef DEBUG
+const {console: Sc} = Services;
+#endif
 
 var EXPORTED_SYMBOLS = ['I18N'];
 
@@ -57,7 +60,7 @@ function I18N(defaultLocale, supportLocales, localeURL) {
   }
   locales.push(defaultLocale);
   this.bundles = [];
-  Sc.logStringMessage(locales.length);
+  debug('loaded locales: ' + locales.join(', '));
   for (var i = 0; i < locales.length; i++)
     this.bundles.push(Ss.createBundle(localeURL + locales[i] + '/messages.properties'));
 }
@@ -104,11 +107,10 @@ I18N.prototype = {
       try {
         return bundle.GetStringFromName(name);
       } catch(e) {
-        Sc.logStringMessage(e.toString());
-        continue;
+        debug(e.toString());
       }
     }
-    Sc.logStringMessage('i18n error: unable to resolve `' + name + '`');
+    debug('unable to resolve `' + name + '`');
     return null;
   },
   dispose: function() {
