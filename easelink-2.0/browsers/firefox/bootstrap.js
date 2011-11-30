@@ -27,7 +27,7 @@
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results: Cr, manager: Cm} = Components;
 Cu.import('resource://gre/modules/Services.jsm');
-const {io: Si, prefs: Sp, obs: So} = Services;
+const {io: Si, prefs: Sp, obs: So, ww: Sw, wm: Swm} = Services;
 #ifdef DEBUG
 const {console: Sc} = Services;
 const kReasonsString = {
@@ -91,6 +91,7 @@ function startup(data, reason) {
   res.setup(data);
   Global.i18n = new I18N(kDefaultLocale, kSupportLocales, kResourceURI + '_locale/');
   prefs.setup();
+  windows.setup();
 }
 
 function shutdown(data, reason) {
@@ -101,6 +102,7 @@ function shutdown(data, reason) {
     EaseLink.disableFixer(key);
   for (var key in EaseLink.protocolHandler.enabled)
     EaseLink.disableProtocolHandler(key);
+  windows.dispose();
   prefs.dispose();
   i18n.dispose();
   res.dispose();
@@ -116,7 +118,7 @@ function install(data, reason) {
 function uninstall(data, reason) {
   debug('uninstall: ' + kReasonsString[reason]);
   if (reason == ADDON_UNINSTALL || reason == ADDON_DOWNGRADE)
-    Sp.getBranch(kPrefBranch).deleteBranch('');
+    Sp.getBranch(kPrefDomain).deleteBranch('');
 }
 
 function checkSupport() {
@@ -192,7 +194,6 @@ const prefs = {
   onOptionPageShow: function(document, topic, addonId) {
     assert(topic == 'addon-options-displayed');
     if (addonId != kAddonId) return;
-    debug(document);
     var rows = document.getElementById('detail-rows');
     for (var key in EaseLink.fixer.available) {
       var setting = document.createElement('setting');
@@ -211,5 +212,41 @@ const prefs = {
       setting.appendChild(document.createTextNode(i18n.get('option-protocol-description', [handler.scheme])));
       rows.appendChild(setting);
     }
+  }
+};
+
+const windows = {
+  setup: function() {
+    Sw.registerNotification(this.onWindowOpen);
+    var enumerator = Swm.getEnumerator('navigator:browser');
+    while (enumerator.hasMoreElements())
+      this.applyToWindow(enumerator.getNext().QueryInterface(Ci.nsIDOMWindow));
+  },
+  dispose: function() {
+    Sw.unregisterNotification(this.onWindowOpen);
+    var enumerator = Swm.getEnumerator('navigator:browser');
+    while (enumerator.hasMoreElements())
+      this.unapplyToWindow(enumerator.getNext().QueryInterface(Ci.nsIDOMWindow));
+  },
+  applyToWindow: function(window) {
+    assert(window.document.documentElement.getAttribute('windowtype') == 'navigator:browser');
+    window.gBrowser.addEventListener('DOMContentLoaded', this.onContentLoaded, true);
+  },
+  unapplyToWindow: function(window) {
+    assert(window.document.documentElement.getAttribute('windowtype') == 'navigator:browser');
+    window.gBrowser.removeEventListener('DOMContentLoaded', this.onContentLoaded, true);
+  },
+  onWindowOpen: function(window, topic) {
+    if (topic == 'domwindowopened')
+      window.addEventListener('load', windows.onWindowLoad, false);
+  },
+  onWindowLoad: function({currentTarget: window}) {
+    window.removeEventListener('load', windows.onWindowLoad, false);
+    if (window.document.documentElement.getAttribute('windowtype') == 'navigator:browser')
+      windows.applyToWindow(window);
+  },
+  onContentLoaded: function({target: document}) {
+    debug('content load');
+    EaseLink.processPage(document);
   }
 };

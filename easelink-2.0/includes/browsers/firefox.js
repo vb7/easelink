@@ -6,6 +6,8 @@ const {io: Si} = Services;
 #ifdef DEBUG
 const {console: Sc} = Services;
 #endif
+const Su = Cc['@mozilla.org/intl/scriptableunicodeconverter'].getService(Ci.nsIScriptableUnicodeConverter);  
+Su.charset = 'GB2312';
 
 const kClassName = 'Ease Link Protocol Handler';
 const kContractIDBase = '@mozilla.org/network/protocol;1?name=';
