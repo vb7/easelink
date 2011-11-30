@@ -27,7 +27,7 @@
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results: Cr, manager: Cm} = Components;
 Cu.import('resource://gre/modules/Services.jsm');
-const {io: Si, prefs: Sp} = Services;
+const {io: Si, prefs: Sp, obs: So} = Services;
 #ifdef DEBUG
 const {console: Sc} = Services;
 const kReasonsString = {
@@ -47,10 +47,13 @@ const Global = this;
 const kImports = ['i18n.js', 'easelink.js'];
 
 const kAddonName = 'easelink';
+const kAddonId = 'easelink@ashi.cn';
 const kResourceURI = 'resource://' + kAddonName + '/';
-const kPrefBranch = 'extension.easelink.';
-const kPrefFixerBranch = Sp.getBranch(kPrefBranch + 'fixer.').QueryInterface(Ci.nsIPrefBranch2);
-const kPrefProtocolBranch = Sp.getBranch(kPrefBranch + 'protocol.').QueryInterface(Ci.nsIPrefBranch2);
+const kPrefDomain = 'extension.easelink.';
+const kPrefFixerDomain = kPrefDomain + 'fixer.';
+const kPrefProtocolDomain = kPrefDomain + 'protocol.';
+const kPrefFixerBranch = Sp.getBranch(kPrefFixerDomain).QueryInterface(Ci.nsIPrefBranch2);
+const kPrefProtocolBranch = Sp.getBranch(kPrefProtocolDomain).QueryInterface(Ci.nsIPrefBranch2);
 const kDefaultLocale = 'zh-CN';
 const kSupportLocales = ['zh-CN', 'en-US'];
 
@@ -163,13 +166,16 @@ const prefs = {
         EaseLink.enableProtocolHandler(key);
     kPrefFixerBranch.addObserver('', this.onFixerPrefChange, false);
     kPrefProtocolBranch.addObserver('', this.onProtocolPrefChange, false);
+    So.addObserver(this.onOptionPageShow, 'addon-options-displayed', false);
   },
   dispose: function() {
     kPrefFixerBranch.removeObserver('', this.onFixerPrefChange);
     kPrefProtocolBranch.removeObserver('', this.onProtocolPrefChange);
+    So.removeObserver(this.onOptionPageShow, 'addon-options-displayed');
   },
   onFixerPrefChange: function(branch, topic, key) {
     assert(topic == 'nsPref:changed');
+    debug(key + ': ' + branch.getBoolPref(key));
     if (branch.getBoolPref(key))
       EaseLink.enableFixer(key);
     else
@@ -177,9 +183,33 @@ const prefs = {
   },
   onProtocolPrefChange: function(branch, topic, key) {
     assert(topic == 'nsPref:changed');
+    debug(key + ': ' + branch.getBoolPref(key));
     if (branch.getBoolPref(key))
       EaseLink.enableProtocolHandler(key);
     else
       EaseLink.disableProtocolHandler(key);
+  },
+  onOptionPageShow: function(document, topic, addonId) {
+    assert(topic == 'addon-options-displayed');
+    if (addonId != kAddonId) return;
+    debug(document);
+    var rows = document.getElementById('detail-rows');
+    for (var key in EaseLink.fixer.available) {
+      var setting = document.createElement('setting');
+      setting.setAttribute('pref', kPrefFixerDomain + key);
+      setting.setAttribute('type', 'bool');
+      setting.setAttribute('title', i18n.get('option-fixer-label', [i18n.get(key + '-name')]));
+      setting.appendChild(document.createTextNode(i18n.get(key + '-fix-description')));
+      rows.appendChild(setting);
+    }
+    rows.appendChild(document.createElement('row'));
+    for each (var handler in EaseLink.protocolHandler.available) {
+      var setting = document.createElement('setting');
+      setting.setAttribute('pref', kPrefProtocolDomain + handler.key);
+      setting.setAttribute('type', 'bool');
+      setting.setAttribute('title', i18n.get('option-protocol-label', [i18n.get(handler.key + '-name')]));
+      setting.appendChild(document.createTextNode(i18n.get('option-protocol-description', [handler.scheme])));
+      rows.appendChild(setting);
+    }
   }
 };

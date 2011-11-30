@@ -89,10 +89,10 @@ I18N.prototype = {
       return name;
     if (args) {
       var idx = 0;
-      return str.replace(/(?:%(\d*)S|\$(#?)(\d*)([a-zA-Z]\w*))/g, function(r0, sidx, preplace, pidx, pname) {
-        if (sidx !== null) {
+      return str.replace(/(?:%(\d+)?S|\$(#)?(\d+)?([a-zA-Z]\w*))/g, function(r0, sidx, preplace, pidx, pname) {
+        if (sidx != '') {
           return args[parseInt(sidx)];
-        } else {
+        } else if (pname != '') {
           var num = args[pidx !== null ? parseInt(pidx) : idx];
           var pstr = PluralForm.get(num, this._get(pname));
           return preplace ? pstr.replace(/#/, num) : pstr;
@@ -107,7 +107,6 @@ I18N.prototype = {
       try {
         return bundle.GetStringFromName(name);
       } catch(e) {
-        debug(e.toString());
       }
     }
     debug('unable to resolve `' + name + '`');
