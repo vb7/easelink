@@ -74,5 +74,30 @@ const EaseLink = {
   disableFixer: function(key) {
     assert(key in this.fixer.enabled);
     delete this.fixer.enabled[key];
+  },
+  processPage: function(document) {
+#ifdef __BROWSER_FIREFOX
+    for each (var handler in this.fixer.enabled)
+      if (handler.hasOwnProperty('selector')) {
+        var fix = handler.fix;
+        var nodes = document.querySelectorAll(handler.selector);
+        for (var i = 0; i < nodes.length; i++)
+          fix(nodes[i]);
+      }
   }
+#else
+    var handlers = this.fixer.enabled;
+    for (var key in handlers) {
+      var handler = handlers[key];
+      if (handler.hasOwnProperty('selector')) {
+        var fix = handler.fix;
+        var decode = this.protocolHandler.enabled.hasOwnProperty(key) ? handler.decode : null;
+        var nodes = document.querySelectorAll(handler.selector);
+        for (var i = 0; i < nodes.length; i++) {
+          fix(nodes[i]);
+          if (decode) nodes[i].href = decode(nodes[i].href);
+        }
+      }
+    }
+#endif
 };
