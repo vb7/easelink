@@ -1,46 +1,61 @@
-const kEaseLinkFixer = 1 << 0;
-const kEaseLinkProtocolHandler = 1 << 1;
+const kURIPattern = /^([a-z][a-z0-9]+)\:\/\/([a-z0-9\+\/]+=*)([#\?&].*)?\s*$/i;
+
 const EaseLink = {
   protocolHandler: {
     available: {},
     enabled: {}
   },
   fixer: {
-    available: {},
-    enabled: {}
+    available: [],
+    fast: []
   },
+#ifdef __BROWSER_FIREFOX
   isDecodeable: function(url) {
-#ifdef __BROWSER_FIREFOX
-    for each (var handler in this.protocolHandler.available)
-      if (url.slice(0, handler.scheme.length) == handler.scheme)
-        return handler.key;
-#else
-    var handlers = this.protocolHandler.available;
-    for (var key in handlers) {
-      var scheme = handlers[key].scheme;
-      if (url.slice(0, scheme.length) == scheme)
-        return key;
+    var match = kURIPattern.exec(url);
+    if (match && match[1]) {
+      var scheme = match[1].toLowerCase();
+      debug(scheme);
+      for each (var handler in this.protocolHandler.available)
+        if (scheme == handler.scheme)
+          return true;
     }
-#endif
+    return false;
+  },
+#else
+  tryDecode: function(url) {
+    var match = kURIPattern.exec(url);
+    if (match && match[1]) {
+      var scheme = match[1].toLowerCase();
+      for (var key in this.protocolHandler.available) {
+        var handler = this.protocolHandler.available[key];
+        if (scheme == handler.scheme)
+          return handler.decode(url);
+      }
+    }
     return null;
   },
-  isFixable: function(node) {
-#ifdef __BROWSER_FIREFOX
-    for each (var handler in this.fixer.enabled)
-      if (handler.test(node))
-        return handler.key;
-#else
-    var handlers = this.fixer.enabled;
-    for (var key in handlers)
-      if (handlers[key].test(node))
-        return key;
 #endif
-    return null;
+  tryFix: function(node) {
+    var handlers = this.fixer.available;
+    for (var i = 0; i < handlers.length; i++)
+      if (handlers[i].test(node)) {
+        handlers[i].fix(node);
+#ifndef __BROWSER_FIREFOX
+        if (this.protocolHandler.enabled.hasOwnProperty(handers[i].key))
+          node.href = handlers[i].decode(node.href);
+#endif
+        return true;
+      }
+    return false;
   },
   addHandler: function(handler) {
-    if (handler.type & kEaseLinkFixer)
-      this.fixer.available[handler.key] = expandFixer(handler);
-    if (handler.type & kEaseLinkProtocolHandler)
+    if (handler.type & EASELINK_HANDLER_TYPE_FIXER) {
+      var fixer = expandFixer(handler);
+      this.fixer.available.push(fixer);
+      if (fixer.hasOwnProperty('selector'))
+        this.fixer.fast.push(fixer);
+    }
+    if (handler.type & EASELINK_HANDLER_TYPE_PROTOCOL)
       this.protocolHandler.available[handler.key] = expandProtocolHandler(handler);
   },
   enableProtocolHandler: function(key) {
@@ -67,37 +82,26 @@ const EaseLink = {
       this.disableProtocolHandler(key);
   },
 #endif
-  enableFixer: function(key) {
-    assert(key in this.fixer.available);
-    this.fixer.enabled[key] = this.fixer.available[key];
-  },
-  disableFixer: function(key) {
-    assert(key in this.fixer.enabled);
-    delete this.fixer.enabled[key];
-  },
   processPage: function(document) {
-#ifdef __BROWSER_FIREFOX
-    for each (var handler in this.fixer.enabled)
-      if (handler.hasOwnProperty('selector')) {
-        var fix = handler.fix;
-        var nodes = document.querySelectorAll(handler.selector);
-        for (var i = 0; i < nodes.length; i++)
-          fix(nodes[i]);
-      }
-  }
-#else
-    var handlers = this.fixer.enabled;
-    for (var key in handlers) {
-      var handler = handlers[key];
-      if (handler.hasOwnProperty('selector')) {
-        var fix = handler.fix;
-        var decode = this.protocolHandler.enabled.hasOwnProperty(key) ? handler.decode : null;
-        var nodes = document.querySelectorAll(handler.selector);
-        for (var i = 0; i < nodes.length; i++) {
-          fix(nodes[i]);
-          if (decode) nodes[i].href = decode(nodes[i].href);
-        }
-      }
-    }
+#ifdef DEBUG
+    var time = new Date();
 #endif
+    var handlers = this.fixer.fast;
+    for (var i = 0; i < handlers.length; i++) {
+      var handler = handlers[i];
+      var nodes = document.querySelectorAll(handler.selector);
+      var fix = handler.fix;
+#ifdef __BROWSER_FIREFOX
+      for (var j = 0; j < nodes.length; j++)
+        fix(nodes[j]);
+#else
+      var decode = this.protocolHandler.enabled.hasOwnProperty(key) ? handler.decode : null;
+      for (var j = 0; j < nodes.length; j++) {
+        fix(nodes[j]);
+        if (decode) nodes[j].href = decode(nodes[j].href);
+      }
+#endif
+    }
+    debug(new Date() - time);
+  }
 };

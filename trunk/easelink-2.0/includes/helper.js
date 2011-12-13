@@ -1,8 +1,3 @@
-const kURIPattern = {
-  general: /^([a-z][a-z0-9]+\:)\/\/([a-z0-9;\/:@&=\+\$\.\-_\!~\*'\(\)%]+)([#\?].*)*$/i,
-  base64: /^([a-z][a-z0-9]+\:)\/\/([a-z0-9\+\/]+=*)([#\?&].*)*$/i
-};
-
 function $extend(obj, ext) {
   for (var key in ext)
     if (!(obj.hasOwnProperty(key)))
@@ -32,10 +27,12 @@ function $fix(attname, node) {
 }
 
 function $decode(prelen, suflen, url) {
-  var match = kURIPattern.base64.exec(url);
+  var match = kURIPattern.exec(url);
   if (match) {
     url = atob(match[2]);
+    debug(url);
 #ifdef __BROWSER_FIREFOX
+    Su.charset = 'GB2312';
     return Su.ConvertToUnicode(url.substring(prelen, url.length - suflen));
 #else
     return url.substring(prelen, url.length - suflen).replace(/[^\x20-\x7e]+/g, escape);
