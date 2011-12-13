@@ -44,52 +44,27 @@ const kReasonsString = {
 
 const Global = this;
 
+#define ADDON_NAME 'easelink'
+#define ADDON_ID 'easelink@ashi.cn'
+#define DEFAULT_LOCALE 'zh-CN'
+#define SUPPORT_LOCALES ['zh-CN', 'en-US']
+
 const kImports = ['i18n.js', 'easelink.js'];
 
-const kAddonName = 'easelink';
-const kAddonId = 'easelink@ashi.cn';
-const kResourceURI = 'resource://' + kAddonName + '/';
+const kResourceURI = 'resource://easelink/';
 const kPrefDomain = 'extension.easelink.';
-const kPrefFixerDomain = kPrefDomain + 'fixer.';
 const kPrefProtocolDomain = kPrefDomain + 'protocol.';
-const kPrefFixerBranch = Sp.getBranch(kPrefFixerDomain).QueryInterface(Ci.nsIPrefBranch2);
 const kPrefProtocolBranch = Sp.getBranch(kPrefProtocolDomain).QueryInterface(Ci.nsIPrefBranch2);
-const kDefaultLocale = 'zh-CN';
-const kSupportLocales = ['zh-CN', 'en-US'];
 
 const kProtocolSupportUnknown = 1;
 const kProtocolSupportMissing = 2;
 const kProtocolSupportApplication = 3;
 const kProtocolSupportEaseLink = 4;
 
-const res = {
-  setup: function(data) {
-    var resourceURI = data.resourceURI;
-    if (!resourceURI) {
-      resourceURI = Si.newFileURI(data.installPath);
-      if (!installPath.isDirectory())
-        resourceURI = Si.newURI('jar:' + resourceURI.alias.spec + '!/', null, null);
-    }
-    Si.getProtocolHandler('resource')
-      .QueryInterface(Ci.nsIResProtocolHandler)
-      .setSubstitution(kAddonName, resourceURI);
-    for (var i = 0; i < kImports.length; i++)
-      Cu.import(kResourceURI + kImports[i]);
-  },
-  dispose: function() {
-    if (Cu.unload)
-      for (var i = 0; i < kImports.length; i++)
-        Cu.unload(kResourceURI + kImports[i]);
-    Si.getProtocolHandler('resource')
-      .QueryInterface(Ci.nsIResProtocolHandler)
-      .setSubstitution(kAddonName, null);
-  }
-};
-
 function startup(data, reason) {
   debug('startup: ' + kReasonsString[reason]);
   res.setup(data);
-  Global.i18n = new I18N(kDefaultLocale, kSupportLocales, kResourceURI + '_locale/');
+  Global.i18n = new I18N(DEFAULT_LOCALE, SUPPORT_LOCALES, kResourceURI + '_locale/');
   prefs.setup();
   windows.setup();
 }
@@ -98,8 +73,6 @@ function shutdown(data, reason) {
   debug('shutdown: ' + kReasonsString[reason]);
   if (reason == APP_SHUTDOWN)
     return;
-  for (var key in EaseLink.fixer.enabled)
-    EaseLink.disableFixer(key);
   for (var key in EaseLink.protocolHandler.enabled)
     EaseLink.disableProtocolHandler(key);
   windows.dispose();
@@ -146,42 +119,50 @@ function checkSupport() {
   return result;
 }
 
+const res = {
+  setup: function(data) {
+    var resourceURI = data.resourceURI;
+    if (!resourceURI) {
+      resourceURI = Si.newFileURI(data.installPath);
+      if (!installPath.isDirectory())
+        resourceURI = Si.newURI('jar:' + resourceURI.alias.spec + '!/', null, null);
+    }
+    Si.getProtocolHandler('resource')
+      .QueryInterface(Ci.nsIResProtocolHandler)
+      .setSubstitution(ADDON_NAME, resourceURI);
+    for (var i = 0; i < kImports.length; i++)
+      Cu.import(kResourceURI + kImports[i]);
+  },
+  dispose: function() {
+    if (Cu.unload)
+      for (var i = 0; i < kImports.length; i++)
+        Cu.unload(kResourceURI + kImports[i]);
+    Si.getProtocolHandler('resource')
+      .QueryInterface(Ci.nsIResProtocolHandler)
+      .setSubstitution(ADDON_NAME, null);
+  }
+};
+
 const prefs = {
   update: function(override) {
     debug('update prefs, override: ' + override);
     //use user branch instead of default one, for data will lost when session ends.
     var support = checkSupport();
-    for (var key in EaseLink.fixer.available)
-      if (override || kPrefFixerBranch.getPrefType(key) == 0)
-        kPrefFixerBranch.setBoolPref(key, true);
     for (var key in EaseLink.protocolHandler.available)
       if (override || kPrefProtocolBranch.getPrefType(key) == 0)
         kPrefProtocolBranch.setBoolPref(key, support[key] == kProtocolSupportMissing);
   },
   setup: function() {
     debug('setup prefs and install observers.');
-    for (var key in EaseLink.fixer.available)
-      if (kPrefFixerBranch.getBoolPref(key))
-        EaseLink.enableFixer(key);
-    for (var key in EaseLink.protocolHandler.available) 
+    for (var key in EaseLink.protocolHandler.available)
       if (kPrefProtocolBranch.getBoolPref(key))
         EaseLink.enableProtocolHandler(key);
-    kPrefFixerBranch.addObserver('', this.onFixerPrefChange, false);
     kPrefProtocolBranch.addObserver('', this.onProtocolPrefChange, false);
     So.addObserver(this.onOptionPageShow, 'addon-options-displayed', false);
   },
   dispose: function() {
-    kPrefFixerBranch.removeObserver('', this.onFixerPrefChange);
     kPrefProtocolBranch.removeObserver('', this.onProtocolPrefChange);
     So.removeObserver(this.onOptionPageShow, 'addon-options-displayed');
-  },
-  onFixerPrefChange: function(branch, topic, key) {
-    assert(topic == 'nsPref:changed');
-    debug(key + ': ' + branch.getBoolPref(key));
-    if (branch.getBoolPref(key))
-      EaseLink.enableFixer(key);
-    else
-      EaseLink.disableFixer(key);
   },
   onProtocolPrefChange: function(branch, topic, key) {
     assert(topic == 'nsPref:changed');
@@ -193,17 +174,8 @@ const prefs = {
   },
   onOptionPageShow: function(document, topic, addonId) {
     assert(topic == 'addon-options-displayed');
-    if (addonId != kAddonId) return;
+    if (addonId != ADDON_ID) return;
     var rows = document.getElementById('detail-rows');
-    for (var key in EaseLink.fixer.available) {
-      var setting = document.createElement('setting');
-      setting.setAttribute('pref', kPrefFixerDomain + key);
-      setting.setAttribute('type', 'bool');
-      setting.setAttribute('title', i18n.get('option-fixer-label', [i18n.get(key + '-name')]));
-      setting.appendChild(document.createTextNode(i18n.get(key + '-fix-description')));
-      rows.appendChild(setting);
-    }
-    rows.appendChild(document.createElement('row'));
     for each (var handler in EaseLink.protocolHandler.available) {
       var setting = document.createElement('setting');
       setting.setAttribute('pref', kPrefProtocolDomain + handler.key);
@@ -231,10 +203,12 @@ const windows = {
   applyToWindow: function(window) {
     assert(window.document.documentElement.getAttribute('windowtype') == 'navigator:browser');
     window.gBrowser.addEventListener('DOMContentLoaded', this.onContentLoaded, true);
+    menu.setup(window.document);
   },
   unapplyToWindow: function(window) {
     assert(window.document.documentElement.getAttribute('windowtype') == 'navigator:browser');
     window.gBrowser.removeEventListener('DOMContentLoaded', this.onContentLoaded, true);
+    menu.dispose(window.document);
   },
   onWindowOpen: function(window, topic) {
     if (topic == 'domwindowopened')
@@ -248,5 +222,56 @@ const windows = {
   onContentLoaded: function({target: document}) {
     debug('content load');
     EaseLink.processPage(document);
+  }
+};
+
+const menu = {
+  selection: null,
+  selectionUrl: null,
+  setup: function(document) {
+    var contextMenu = document.getElementById('contentAreaContextMenu');
+    var item = document.createElement('menuitem');
+    item.setAttribute('id', 'easelink-convert');
+    item.setAttribute('label', i18n.get('menu-convert'));
+    item.hidden = true;
+    item.addEventListener('command', this.onConvertCommand, true);
+    contextMenu.insertBefore(item, document.getElementById('context-sep-selectall').nextSibling);
+    contextMenu.addEventListener('popupshowing', this.onPopupShowing, true);
+  },
+  dispose: function(document) {
+    var contextMenu = document.getElementById('contentAreaContextMenu');
+    var item = document.getElementById('easelink-convert');
+    contextMenu.removeChild(item);
+    contextMenu.removeEventListener('popupshowing', this.onPopupShowing, true);
+  },
+  onPopupShowing: function(e) {
+    var window = e.view;
+    var cm = window.gContextMenu;
+    var menuitem = window.document.getElementById('easelink-convert');
+    menuitem.hidden = true;
+    if (cm.onLink) {
+      if (EaseLink.tryFix(cm.link)) {
+        cm.linkURL = cm.getLinkURL();
+        cm.linkURI = cm.getLinkURI();
+        cm.linkProtocol = cm.getLinkProtocol();
+      }
+    } else if (cm.isTextSelected) {
+      var selection = window.document.commandDispatcher.focusedWindow.getSelection();
+      var text, match, protocol;
+      if (selection.rangeCount == 1 && (text = selection.toString().trim()) &&
+          text.length <= 2048 && EaseLink.isDecodeable(text)) {
+        menu.selection = selection;
+        menu.selectionUrl = text;
+        menuitem.hidden = false;
+      }
+    }
+  },
+  onConvertCommand: function() {
+    var range = menu.selection.getRangeAt(0);
+    var frag = range.extractContents();
+    var link = frag.ownerDocument.createElement('a');
+    link.setAttribute('href', menu.selectionUrl);
+    link.appendChild(frag);
+    range.insertNode(link);
   }
 };

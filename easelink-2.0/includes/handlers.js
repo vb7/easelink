@@ -2,7 +2,7 @@ EaseLink.addHandler({
   key: 'thunder',
   name: 'thunder-name',
   description: 'thunder-description',
-  type: kEaseLinkFixer | kEaseLinkProtocolHandler,
+  type: EASELINK_HANDLER_TYPE_FIXER | EASELINK_HANDLER_TYPE_PROTOCOL,
   test: generateTest('thunderhref'),
   selector: 'a[thunderhref]',
   fix: generateFix('thunderhref'),
@@ -17,7 +17,7 @@ EaseLink.addHandler({
   key: 'qqdl',
   name: 'qqdl-name',
   description: 'qqdl-description',
-  type: kEaseLinkFixer | kEaseLinkProtocolHandler,
+  type: EASELINK_HANDLER_TYPE_FIXER | EASELINK_HANDLER_TYPE_PROTOCOL,
   test: generateTest('qhref'),
   selector: 'a[qhref]',
   fix: generateFix('qhref'),
@@ -32,7 +32,7 @@ EaseLink.addHandler({
   key: 'flashget',
   name: 'flashget-name',
   description: 'flashget-description',
-  type: kEaseLinkFixer | kEaseLinkProtocolHandler,
+  type: EASELINK_HANDLER_TYPE_FIXER | EASELINK_HANDLER_TYPE_PROTOCOL,
   test: function(node) {
     for (var i = 0; i < node.attributes.length; i++)
       if ((/^flashget\:/i).test(node.attributes[i].value)) {
@@ -53,7 +53,7 @@ EaseLink.addHandler({
   key: 'rayfile',
   name: 'rayfile-name',
   description: 'rayfile-description',
-  type: kEaseLinkProtocolHandler,
+  type: EASELINK_HANDLER_TYPE_PROTOCOL,
 #ifdef __BROWSER_FIREFOX
   classId: Components.ID('{8af3ff9d-1493-42fa-9e55-0a8dfd58cd34}'),
 #endif
@@ -65,7 +65,7 @@ EaseLink.addHandler({
   key: 'namipan',
   name: 'nami-name',
   description: 'nami-description',
-  type: kEaseLinkFixer,
+  type: EASELINK_HANDLER_TYPE_FIXER,
   test: function(node) {
     if (node.protocol == 'javascript:' && node.href.indexOf('.namipan.com') > -1) {
       var url = node.href.split("'");
@@ -77,31 +77,4 @@ EaseLink.addHandler({
     return false;
   },
   fix: generateFix('namihref')
-});
-
-EaseLink.addHandler({
-  key: 'qqwpa',
-  name: 'qqwpa-name',
-  type: kEaseLinkFixer,
-  test: function(node) {
-    return /^http:\/\/wpa\.qq\.com/.test(node.href);
-  },
-  fix: function(node) {
-    var url = node.getAttribute('href');
-    var matches = PROTOCOL_PATTERNS.URI.exec(url), params;
-    if (matches && (params = matches[3]) && params.length > 0) {
-      var paramlist = {};
-      params = params.split('&');
-      for (var i = 0; i < params.length; ++i) {
-        var pair = params[i].split('=');
-        paramlist[pair[0].toLowerCase()] = pair[1];
-      }
-      url = 'tencent://Message/?menu=' + (paramlist.menu || 'no')
-          + '&exe=' + (paramlist.exe || '')
-          + '&uin=' + (paramlist.uin || '10000')
-          + '&websiteName=' + (paramlist.site || 'unknown')
-          + '&info=';
-      node.setAttribute('href', url);
-    }
-  }
 });

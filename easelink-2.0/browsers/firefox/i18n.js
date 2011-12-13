@@ -86,7 +86,7 @@ I18N.prototype = {
   get: function(name, args) {
     var str = this._get(name);
     if (str === null)
-      return name;
+      return '(' + name + ')';
     if (args) {
       var idx = 0;
       return str.replace(/(?:%(\d+)?S|\$(#)?(\d+)?([a-zA-Z]\w*))/g, function(r0, sidx, preplace, pidx, pname) {

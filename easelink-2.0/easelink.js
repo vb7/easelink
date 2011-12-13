@@ -25,6 +25,9 @@
 
 'use strict'
 
+#define EASELINK_HANDLER_TYPE_FIXER 1
+#define EASELINK_HANDLER_TYPE_PROTOCOL 2
+
 #include "helper.js"
 #include "core.js"
 #if defined(__BROWSER_FIREFOX)
