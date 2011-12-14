@@ -62,7 +62,8 @@ const EaseLink = {
     assert(key in this.protocolHandler.available);
 #ifdef __BROWSER_FIREFOX
     var handler = this.protocolHandler.available[key];
-    Cm.nsIComponentRegistrar.registerFactory(handler.classId, kClassName, kContractIDBase + handler.scheme, handler);
+    Cm.nsIComponentRegistrar.registerFactory(handler.classId, 'Ease Link Protocol Handler',
+      '@mozilla.org/network/protocol;1?name=' + handler.scheme, handler);
     this.protocolHandler.enabled[key] = handler;
 #else
     this.protocolHandler.enabled[key] = this.protocolHandler.available[key];
