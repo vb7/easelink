@@ -1,6 +1,6 @@
 #summary Firefox 用户指南。
 #labels Featured,Phase-Guide,Browser-Firefox
-= 你已经准备就绪 =
+= 您已经准备就绪 =
 该版本的 Ease Link 使用了免重启技术，您不用再重新启动 Firefox^1^。与此同时 Ease link 已经为您的系统重新调校过。您应该已经可以下载迅雷、快车、旋风和 Rayfile 的地址。
 
 如果您想手动设置需要解码的链接类型，您可以在扩展管理器中找到相关选项^2^。
