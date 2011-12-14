@@ -86,6 +86,9 @@ function install(data, reason) {
   res.setup(data);
   prefs.update(reason == ADDON_INSTALL || reason == ADDON_DOWNGRADE);
   res.dispose();
+  var window = Swm.getMostRecentWindow('navigator:browser');
+  if (window)
+    window.gBrowser.selectedTab = window.gBrowser.addTab(EASELINK_GUIDE_URL);
 }
 
 function uninstall(data, reason) {

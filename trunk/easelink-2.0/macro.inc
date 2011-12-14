@@ -9,3 +9,10 @@
 #define assert(x)
 #define debug(x)
 #endif //DEBUG
+
+#define EASELINK_HANDLER_TYPE_FIXER 1
+#define EASELINK_HANDLER_TYPE_PROTOCOL 2
+
+#define STR(v) #v
+#define EASELINK_GUIDE_URL 'http://code.google.com/p/easelink/wiki/guide-' + __BROWSER
+#define EASELINK_DECODE_FAIL_URL 'http://code.google.com/p/easelink/wiki/failed'

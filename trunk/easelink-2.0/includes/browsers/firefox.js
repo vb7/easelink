@@ -8,9 +8,7 @@ const {console: Sc} = Services;
 #endif
 const Su = Cc['@mozilla.org/intl/scriptableunicodeconverter'].getService(Ci.nsIScriptableUnicodeConverter);  
 
-const kClassName = 'Ease Link Protocol Handler';
-const kContractIDBase = '@mozilla.org/network/protocol;1?name=';
-const kFailedURI = Si.newURI('http://www.google.com/', null, null);
+const kFailedURI = Si.newURI(EASELINK_DECODE_FAIL_URL, null, null);
 
 const kFixerPrototype = {
   test: $false,
