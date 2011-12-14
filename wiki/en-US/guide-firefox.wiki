@@ -1,3 +1,5 @@
+#summary Firefox User Guide.
+#labels Featured,Phase-Guide,Browser-Firefox
 = You are ready to go. =
 This version of Ease Link is bootstrapped, so no restart is needed^1^. And 
 Ease link has been fully tweaked for your System. You should be able to 
