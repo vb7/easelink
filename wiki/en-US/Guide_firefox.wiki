@@ -1,36 +1,22 @@
 #summary Firefox User Guide.
 #labels Featured,Phase-Guide,Browser-Firefox
 = You are ready to go. =
-This version of Ease Link is bootstrapped, so no restart is needed^1^. And 
-Ease link has been fully tweaked for your System. You should be able to 
-download Thunder, Flashget, QQ Xuanfeng and Rayfile links.
+This version of Ease Link is bootstrapped, so no restart is needed^1^. And Ease link has been fully tweaked for your System. You should be able to download Thunder, Flashget, QQ Xuanfeng and Rayfile links.
 
-If you want to specify what type of links you want to decode manually, 
-you can find options in Add-on manager^2^.
+If you want to specify what type of links you want to decode manually, you can find options in Add-on manager^2^.
 
-1, You may need reload the page you opened before installation, to get 
-fixing procedure work.
+,,1. You may need reload the page you opened before installation, to get fixing procedure work.,,
 
-2, This requires Firefox 7 and later version, otherwise please upgrade 
-your browser, or go to about:config and check out settings starts with 
-extension.easelink.
+,,2. This requires Firefox 7 and later version, otherwise please upgrade your browser, or go to about:config and check out settings starts with extension.easelink.,,
 
 = Just click right on the link! =
-Unlike 1.0 version, you don't have to click with your right button on the 
-link. Those custom protocols are natively supported by your Firefox now, 
-and will be decoded to HTTP and FTP links when necessary.
+Unlike 1.0 version, you don't have to click with your right button on the link. Those custom protocols are natively supported by your Firefox now, and will be decoded to HTTP and FTP links when necessary.
 
 = Use your location bar. =
-Yes, you may paste a link to location bar to decode it now. I believe it
-is useful in some occasion.
+Yes, you may paste a link to location bar to decode it now. I believe it is useful in some occasion.
 
 = Convert your selecton. =
-Same as 1.0, you may select a phase of text of a link on page, and turn it 
-into an link. Of course, you can drag the selection to tab bar, and open it
-in a new tab.
+Same as 1.0, you may select a phase of text of a link on page, and turn it into an link. Of course, you can drag the selection to tab bar, and open it in a new tab.
 
 = Better Performance =
-Ease Link has been rewritten from top to the bottom, and it runs faster than
-ever before. This result in the new selecting method, according to tests, this
-boost Ease Link 2x fast at least. At the same time, the brand new precompilation
-technology will save your memory space and help your browser run as fast as before.
+Ease Link has been rewritten from top to the bottom, and it runs faster than ever before. This result in the new selecting method, according to tests, this boost Ease Link 2x fast at least. At the same time, the brand new precompilation technology will save your memory space and help your browser run as fast as before.
