@@ -8,12 +8,12 @@ download Thunder, Flashget, QQ Xuanfeng and Rayfile links.
 If you want to specify what type of links you want to decode manually, 
 you can find options in Add-on manager^2^.
 
-^1, You may need reload the page you opened before installation, to get 
-fixing procedure work.^
+1, You may need reload the page you opened before installation, to get 
+fixing procedure work.
 
-^2, This requires Firefox 7 and later version, otherwise please upgrade 
+2, This requires Firefox 7 and later version, otherwise please upgrade 
 your browser, or go to about:config and check out settings starts with 
-extension.easelink.^
+extension.easelink.
 
 = Just click right on the link! =
 Unlike 1.0 version, you don't have to click with your right button on the 
