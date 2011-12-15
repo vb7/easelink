@@ -1,5 +1,5 @@
 ﻿#summary 欢迎光临 Ease Link 项目主页。
-#labels Featured
+#labels Deprecated
 =欢迎=
 
 http://easelink.googlecode.com/svn/wiki/ad.png
