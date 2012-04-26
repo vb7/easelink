@@ -29,6 +29,10 @@
     "message": "自动解码专用链接为常规链接",
     "description": "选项页：启动该选项时将把 thunder://* 等特殊协议地址解码为 http://*、ftp://* 等常规地址。"
   },
+  "options_nocontext": {
+    "message": "隐藏上下文菜单项",
+    "description": "隐藏上下文菜单项。"
+  },
   "contextmenu_process_label": {
     "message": "处理全部链接",
     "description": "上下文菜单：点击处理（修复并根据选项解码）页面上的特殊链接。"
