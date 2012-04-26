@@ -29,6 +29,10 @@
     "message": "Automatically Decode URLs of Private Protocol",
     "description": "Options page: check this option to decode URLs like thunder://* to http://* or ftp://* without user interaction."
   },
+  "options_nocontext": {
+    "message": "Hide Context Menu Items",
+    "description": "Hide Context Menu Items."
+  },
   "contextmenu_process_label": {
     "message": "Process All Links",
     "description": "Context menu: click this to process (fix and decode on setting) all the links on the webpage."
