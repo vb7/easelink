@@ -1,11 +1,3 @@
-﻿<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-</head>
-<body>
-<script type="text/javascript" src="PrefBranch.js"></script>
-<script type="text/javascript">
 const Version = '$VER$';
 
 //initialize settings
@@ -13,12 +5,12 @@ const Version = '$VER$';
 var prefBranch = new PrefBranch('');
 
 if (!prefBranch.getBoolPref('initialized')) {
-	prefBranch.setBoolPref('initialized', true);
+  prefBranch.setBoolPref('initialized', true);
   prefBranch.setCharPref('ver', '');
-	prefBranch.setBoolPref('plain', true);
-	prefBranch.setBoolPref('thunder', true);
-	prefBranch.setBoolPref('qqxuanfeng', false);
-	prefBranch.setBoolPref('nocontext', false);
+  prefBranch.setBoolPref('plain', true);
+  prefBranch.setBoolPref('thunder', true);
+  prefBranch.setBoolPref('qqxuanfeng', false);
+  prefBranch.setBoolPref('nocontext', false);
 }
 
 if (prefBranch.getCharPref('ver') != Version) {
@@ -31,10 +23,10 @@ if (prefBranch.getCharPref('ver') != Version) {
 }
 
 var settings = {
-	plain: prefBranch.getBoolPref('plain'),
-	thunder: prefBranch.getBoolPref('thunder'),
-	qqxuanfeng: prefBranch.getBoolPref('qqxuanfeng'),
-	nocontext: prefBranch.getBoolPref('nocontext')
+  plain: prefBranch.getBoolPref('plain'),
+  thunder: prefBranch.getBoolPref('thunder'),
+  qqxuanfeng: prefBranch.getBoolPref('qqxuanfeng'),
+  nocontext: prefBranch.getBoolPref('nocontext')
 };
 
 //initialize constants
@@ -74,7 +66,7 @@ const MenuItems = {
 //classes
 
 var extension = {
-	handleRequest: function (aRequest, aSender, aSendResponse) {
+  handleRequest: function (aRequest, aSender, aSendResponse) {
     switch (aRequest.topic) {
       case 'changeMenuItemVisibility':
       /*
@@ -115,36 +107,32 @@ var extension = {
   handlePrefBranchChange: function (e) {
     if (e.key in settings)
       settings[e.key] = JSON.parse(e.newValue);
-		if (e.key == 'nocontext')
-			extension.updateContextMenu();
+    if (e.key == 'nocontext')
+      extension.updateContextMenu();
     chrome.windows.getAll({ populate: true }, extension.handleAllWindow);
   },
   init: function () {
-		this.updateContextMenu();
+    this.updateContextMenu();
     chrome.extension.onRequest.addListener(this.handleRequest);
     chrome.extension.onRequestExternal.addListener(this.handleRequestExternal);
     window.addEventListener('storage', this.handlePrefBranchChange);
   },
-	updateContextMenu: function () {
-		if (!settings.nocontext) {
-			for (var key in MenuItems) {
-				var item = MenuItems[key];
-				delete item.settings.generatedId;
-				item.id = chrome.contextMenus.create(item.settings);
-			}
-		} else {
-			for (var key in MenuItems) {
-				var item = MenuItems[key];
-				if (item.id != undefined)
-					chrome.contextMenus.remove(item.id);
-				delete item.id;
-			}
-		}
-	}
+  updateContextMenu: function () {
+    if (!settings.nocontext) {
+      for (var key in MenuItems) {
+        var item = MenuItems[key];
+        delete item.settings.generatedId;
+        item.id = chrome.contextMenus.create(item.settings);
+      }
+    } else {
+      for (var key in MenuItems) {
+        var item = MenuItems[key];
+        if (item.id != undefined)
+          chrome.contextMenus.remove(item.id);
+        delete item.id;
+      }
+    }
+  }
 };
 
 extension.init();
-
-</script>
-</body>
-</html>

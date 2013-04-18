@@ -5,22 +5,7 @@
 <title>Ease Link</title>
 <!-- inspired by http://www.maratz.com/blog/archives/2006/06/11/fancy-checkboxes-and-radio-buttons/ -->
 <script type="text/javascript" src="PrefBranch.js"></script>
-<script type="text/javascript">
-window.addEventListener('load', function () {
-  var prefBranch = new PrefBranch('');
-  function handleChange(e) {
-    prefBranch.setBoolPref(e.target.name, e.target.checked);
-  }
-  var inputs = document.getElementsByTagName('input');
-  for (var i = 0; i < inputs.length; i++) {
-    inputs[i].checked = prefBranch.getBoolPref(inputs[i].name);
-    inputs[i].addEventListener('change', handleChange);
-    var i18nkeys = inputs[i].title.split(',');
-    inputs[i].nextSibling.innerHTML = chrome.i18n.getMessage(i18nkeys[0], [chrome.i18n.getMessage(i18nkeys[1])]);
-  }
-});
-
-</script>
+<script type="text/javascript" src="settings.js"></script>
 <style type="text/css">
 body {
   font-family: sans-serif;
