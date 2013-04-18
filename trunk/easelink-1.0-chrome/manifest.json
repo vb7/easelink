@@ -1,6 +1,7 @@
 ﻿{
   "name": "Ease Link",
   "version": "$VER$",
+  "manifest_version": 2,
   "description": "__MSG_extension_description__",
   "icons": {
     "16": "16.png",
@@ -9,7 +10,12 @@
   },
   "default_locale": "en_US",
   "minimum_chrome_version": "6",
-  "background_page": "extension.html",
+  "background": {
+    "scripts": [
+      "PrefBranch.js",
+      "extension.js"
+    ]
+  },
   "options_page": "options.html",
   "permissions": [
     "contextMenus",
