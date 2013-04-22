@@ -182,7 +182,7 @@ const ContextMenu = {
         this._convertable = true;
       }
     }
-    chrome.extension.sendRequest({
+    chrome.runtime.sendMessage({
       topic: 'changeMenuItemVisibility',
       change: {
         decode: this._decodable,
@@ -238,7 +238,7 @@ const extension = {
     }
   },
   init: function () {
-    chrome.extension.sendRequest({ topic: 'getConfig' }, function(aSettings) {
+    chrome.runtime.sendMessage({ topic: 'getConfig' }, function(aSettings) {
       gSettings = aSettings;
       var auto = false;
       for (var key in AutomaticProtocols)
@@ -248,7 +248,7 @@ const extension = {
         }
       if (auto) extension.autoProcess();
     });
-    chrome.extension.onRequest.addListener(this.handleRequest);
+    chrome.runtime.onMessage.addListener(this.handleRequest);
     window.addEventListener('contextmenu', ContextMenu);
   }
 };

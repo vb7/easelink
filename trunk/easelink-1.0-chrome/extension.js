@@ -37,7 +37,7 @@ const MenuItems = {
       type: 'normal',
       title: chrome.i18n.getMessage('contextmenu_process_label'),
       onclick: function (aContext, aTab) {
-        chrome.tabs.sendRequest(aTab.id, {topic: 'process'});
+        chrome.tabs.sendMessage(aTab.id, {topic: 'process'});
       }
     }
   },
@@ -47,7 +47,7 @@ const MenuItems = {
       title: chrome.i18n.getMessage('contextmenu_decode_label'),
       contexts: ['link'],
       onclick: function (aContext, aTab) {
-        chrome.tabs.sendRequest(aTab.id, {topic: 'decode'});
+        chrome.tabs.sendMessage(aTab.id, {topic: 'decode'});
       }
     }
   },
@@ -57,7 +57,7 @@ const MenuItems = {
       title: chrome.i18n.getMessage('contextmenu_convert_label'),
       contexts: ['selection'],
       onclick: function (aContext, aTab) {
-        chrome.tabs.sendRequest(aTab.id, {topic: 'convert'});
+        chrome.tabs.sendMessage(aTab.id, {topic: 'convert'});
       }
     }
   }
@@ -113,8 +113,8 @@ var extension = {
   },
   init: function () {
     this.updateContextMenu();
-    chrome.extension.onRequest.addListener(this.handleRequest);
-    chrome.extension.onRequestExternal.addListener(this.handleRequestExternal);
+    chrome.runtime.onMessage.addListener(this.handleRequest);
+    chrome.runtime.onMessageExternal.addListener(this.handleRequestExternal);
     window.addEventListener('storage', this.handlePrefBranchChange);
   },
   updateContextMenu: function () {
